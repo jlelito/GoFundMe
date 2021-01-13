@@ -1,21 +1,33 @@
 {
-  "name": "honeyfund-blockchain",
+  "name": "GoFundMe",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://jlelito.github.io/GoFundMe",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.5",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "bootstrap": "^4.5.3",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "dotenv": "^8.2.0",
+    "gh-pages": "^3.1.0",
+    "identicon.js": "^2.3.3",
     "react": "^17.0.1",
+    "react-bootstrap": "^1.4.0",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.0",
-    "web-vitals": "^0.2.4"
+    "truffle-hdwallet-provider": "^1.0.17",
+    "web-vitals": "^0.2.4",
+    "web3": "^1.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
