@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/GoFundMe/static/css/main.ab7136cd.chunk.css",
+    "main.js": "/GoFundMe/static/js/main.a171c847.chunk.js",
+    "main.js.map": "/GoFundMe/static/js/main.a171c847.chunk.js.map",
+    "runtime-main.js": "/GoFundMe/static/js/runtime-main.22b2cc16.js",
+    "runtime-main.js.map": "/GoFundMe/static/js/runtime-main.22b2cc16.js.map",
+    "static/css/2.20aa2d7b.chunk.css": "/GoFundMe/static/css/2.20aa2d7b.chunk.css",
+    "static/js/2.3da61989.chunk.js": "/GoFundMe/static/js/2.3da61989.chunk.js",
+    "static/js/2.3da61989.chunk.js.map": "/GoFundMe/static/js/2.3da61989.chunk.js.map",
+    "index.html": "/GoFundMe/index.html",
+    "static/css/2.20aa2d7b.chunk.css.map": "/GoFundMe/static/css/2.20aa2d7b.chunk.css.map",
+    "static/css/main.ab7136cd.chunk.css.map": "/GoFundMe/static/css/main.ab7136cd.chunk.css.map",
+    "static/js/2.3da61989.chunk.js.LICENSE.txt": "/GoFundMe/static/js/2.3da61989.chunk.js.LICENSE.txt",
+    "static/media/ETH.91dd9993.png": "/GoFundMe/static/media/ETH.91dd9993.png",
+    "static/media/smiley.d950c933.jpg": "/GoFundMe/static/media/smiley.d950c933.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.22b2cc16.js",
+    "static/css/2.20aa2d7b.chunk.css",
+    "static/js/2.3da61989.chunk.js",
+    "static/css/main.ab7136cd.chunk.css",
+    "static/js/main.a171c847.chunk.js"
+  ]
+}
