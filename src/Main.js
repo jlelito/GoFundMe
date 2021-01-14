@@ -8,7 +8,6 @@ class Main extends Component {
     
     let ownedCampaigns = []
     this.props.campItems.forEach(element => {
-      console.log(element)
       if (element.owner == this.props.account){
         ownedCampaigns.push(element)
       }

@@ -7,6 +7,7 @@ import "./App.css";
 import Identicon from 'identicon.js';
 import smile from './src_images/smiley.jpg'
 import ethPic from './src_images/ETH.png';
+import CreateCampaignForm from './CreateCampaign.js';
 
 
 
@@ -17,9 +18,7 @@ class App extends Component {
     await this.loadWeb3()
     await this.loadBlockchainData()
     await this.updateCampaigns()
-    this.getCurrentTime()
-    
-    
+  
   }
 
   
@@ -114,11 +113,7 @@ class App extends Component {
     
 }
 
-    getCurrentTime(){
-      var _date = new Date().toISOString().split('T')[0];
-      this.setState({currentDate: _date})
-      console.log('Date State:', this.state.currentDate)
-    }
+    
 
 
     //Creates Campaigns
@@ -228,56 +223,9 @@ class App extends Component {
         <div className="row">
             <div className='col-6'>
               <h2 className="my-4">Create Campaign!</h2>
-              <form className="mb-5" 
-                            onSubmit={(event) => {
-                            event.preventDefault()
-                            let campName, campDuration, campGoal
-                            campName = this.name.value
-                            campDuration = this.duration.value.toString()
-                            campGoal = window.web3.utils.toWei(this.goal.value.toString(), 'Ether')
-                            this.createCampaign(campName, campDuration, campGoal)
-              }}>
-                        
-                        <div className="input-group form-row justify-content-center">
-                          <div className="form-group col-md-6 ">
-                            <label>Name of Campaign</label>
-                            <input
-                            type="text"
-                            ref={(name) => { this.name = name }}
-                            className="form-control form-control-lg"
-                            placeholder="Campaign Name"
-                            required />
-                          </div>
-                        </div>
-                        
-                        <div className="input-group form-row justify-content-center">
-                          <div className="form-group col-sm-5">
-                            <label className="text-center">Date</label>
-                              <input
-                              type="datetime-local"
-                              ref={(duration) => { this.duration = duration }}
-                              className="form-control form-control-lg"
-                              placeholder="0"
-                              required /> 
-                          </div>
-                          
-
-                            <div className="form-group col-sm-2">
-                            <label className="text-center">Goal (in Ether)</label>
-                              <input
-                              type="number"
-                              step=".01"
-                              ref={(goal) => { this.goal = goal }}
-                              className="form-control form-control-lg"
-                              placeholder="0 ETH"
-                              required /> 
-                            </div>
-                          </div>
-                        
-                        <button type="submit" className="btn btn-success  btn-lg">
-                          Create Campaign
-                        </button>
-              </form>
+              <CreateCampaignForm 
+              createCampaign={this.createCampaign}
+              />
             </div>
           
           <div className="col-md-5 justify-content-center">
