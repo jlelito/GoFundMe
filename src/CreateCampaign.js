@@ -49,12 +49,13 @@ class CreateCampaign extends Component {
                           <div className="form-group col-sm-5">
                             <label className="text-center">Date</label>
                               <input
-                              type="datetime-local"
-                              ref={(duration) => { this.duration = duration }}
-                              className="form-control form-control-lg"
-                              //2021-01-13T22:13:14
-                              min="2021-01-04T22:13:14"
-                              required /> 
+                                type="datetime-local"
+                                ref={(duration) => { this.duration = duration }}
+                                className="form-control form-control-lg"
+                                step="any"
+                                min={this.state.currentDate}
+                                required 
+                              /> 
                           </div>
                           
 
