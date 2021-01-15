@@ -72,8 +72,11 @@ class Card extends Component {
                           : 
                           <>
                             {reachedGoal(this.props.campaign) == false && this.props.isFinished(this.props.campaign) ? 
-                              <div className="text-danger mt-1"><b>Did not reach Goal</b></div> 
+                              <>
+                              <div className="text-danger mt-1"><b>Did not reach Goal</b></div>
+                              </>
                               : null
+                              
                             }
                           </>
                           }
@@ -98,7 +101,11 @@ class Card extends Component {
                               
                              : <>
                             {this.props.isFinished(this.props.campaign) ? 
-                            <div className="text-success">Campaign is Finished</div> : (
+                            <>
+                            <div className="text-success">Campaign is Finished</div>
+                            <button className="btn btn-primary btn-sm float-right" onClick={() => this.props.refund(this.props.campaign.id)}>Refund</button> 
+                            </>
+                            : (
                             
                             <form
                             onSubmit={(event) => {

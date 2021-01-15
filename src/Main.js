@@ -57,7 +57,7 @@ class Main extends Component {
           </>
   }
           
-        <b><h1 className="h1 mb-5 mt-5">Active Campaigns!</h1></b>
+        <b><h1 className="h1 mb-5 mt-5">Active Campaigns</h1></b>
         <form className="mb-3 form-inline" onSubmit={(event) => {
                             event.preventDefault()
                             let searchInput
@@ -115,7 +115,7 @@ class Main extends Component {
             </div>
           </main>
           <hr />
-          <b><h1 className="h1 mb-5 mt-5">Finished Campaigns!</h1></b>
+          <b><h1 className="h1 mb-5 mt-5">Finished Campaigns</h1></b>
           <main role="main" className="container-fluid d-flex justify-content-center">
             <div className="card-group justify-content-center">
               
@@ -128,6 +128,7 @@ class Main extends Component {
                           fundCampaign={this.props.fundCampaign}
                           account={this.props.account}
                           withdraw={this.props.withdraw}
+                          refund={this.props.refund}
                           isFinished={this.props.isFinished}
                           withdrawed={this.props.withdrawed}
                         />

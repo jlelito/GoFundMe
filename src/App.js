@@ -97,6 +97,7 @@ class App extends Component {
         this.setState({campaignList: camps})
         this.setState({withdrawed})
         console.log('Campaign List:', this.state.campaignList)
+        console.log('Contributions:', contribs)
         this.setState({contributionsState: contribs})
         this.setState({loading: false})
 
@@ -129,7 +130,6 @@ class App extends Component {
         //Check if Transaction failed or not
         console.log(hash)
         window.location.reload();
-        
       })
     } catch(e) {
       window.alert(e)
@@ -143,7 +143,6 @@ class App extends Component {
       amount = window.web3.utils.toWei(amount, 'Ether')
       this.state.goFundContract.methods.fundCampaign(campId).send({ from: this.state.account, value: amount }).on('transactionHash', (hash) => {
         //Check if Transaction failed or not
-        
         window.location.reload();
       })
     } catch(e){
@@ -153,8 +152,18 @@ class App extends Component {
 
     withdraw = (campId) => {
       try{
-      //amount = window.web3.utils.fromWei(amount, 'Ether')
       this.state.goFundContract.methods.withdraw(campId).send({ from: this.state.account }).on('transactionHash', (hash) => {
+        //Check if Transaction failed or not
+        window.location.reload();
+      })
+    } catch(e){
+      window.alert(e)
+    }
+    }
+
+    refund = (campId) => {
+      try{
+      this.state.goFundContract.methods.refund(campId).send({ from: this.state.account }).on('transactionHash', (hash) => {
         //Check if Transaction failed or not
         window.location.reload();
       })
@@ -203,7 +212,6 @@ class App extends Component {
     
 
     window.ethereum.on('accountsChanged', accounts => {
-      console.log(accounts)
       this.setState({account: accounts[0]})
       window.location.reload();
     });
@@ -224,7 +232,7 @@ class App extends Component {
             <div className='col-6'>
               <h2 className="my-4">Create Campaign!</h2>
               <CreateCampaignForm 
-              createCampaign={this.createCampaign}
+                createCampaign={this.createCampaign}
               />
             </div>
           
@@ -259,6 +267,7 @@ class App extends Component {
                 account={this.state.account}
                 fundCampaign={this.fundCampaign}
                 withdraw={this.withdraw}
+                refund={this.refund}
                 isFinished={this.isFinished}
                 withdrawed={this.state.withdrawed}
           />
