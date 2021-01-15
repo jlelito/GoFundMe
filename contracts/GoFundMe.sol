@@ -39,18 +39,14 @@ contract GoFundMe  {
         require(campaigns[_id].owner != msg.sender, 'cannot fund your own campaign!');
         //Cannot fund campaign that ended
         require(now < campaigns[_id].date, 'campaign already ended!');
-
         //Fetch the campaign
         Campaign storage _camp = campaigns[_id];
         //Increment the amount
         _camp.amount += msg.value;
-        
         //Track the funding payments for that address
         fundingPayments[msg.sender][_id] += msg.value;
         //Track Contributors
-        contributors[msg.sender][_id] = true;
-        
-        
+        contributors[msg.sender][_id] = true;  
     }
 
     //Withdraw from owners GoFundMe Campaign after it ends
@@ -68,6 +64,24 @@ contract GoFundMe  {
         campOwner.transfer(campAmount);
         //Change withdrawed to true
         withdrawed[_id] = true;
+    }
+
+    //Refunds the contributers if the campaign fails
+    function refund(uint _id) public {
+        //Campaign must exist
+        require(campaignExists[_id] == true, 'campaign must exist!');
+        //Cannot refund your own campaign
+        require(campaigns[_id].owner != msg.sender, 'cannot get a refund from your own campaign!');
+        //Campaign must have ended
+        require(now > campaigns[_id].date, 'campaign must have ended!');
+        //Must have contributed
+        require(fundingPayments[msg.sender][_id] > 0, 'must contribute to refund!');
+        //Fetch the address requesting a refund
+        address payable refunder = msg.sender;
+        //Refund the refunder
+        refunder.transfer(fundingPayments[msg.sender][_id]);
+        //Clear the refunder contributions for that campaign
+        delete fundingPayments[msg.sender][_id];
     }
 
 }
