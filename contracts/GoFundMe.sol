@@ -25,16 +25,15 @@ contract GoFundMe  {
     //Creates a GoFundMe Campaign
     function createCampaign(uint _duration, string memory name, uint targetFunding) public {
         require(campaignExists[nextId] != true, 'campaign already exists!');
-        campaigns[nextId] = Campaign(msg.sender,  _duration, name, nextId, 0, targetFunding);
+        uint endDate = now + _duration;
+        campaigns[nextId] = Campaign(msg.sender,  endDate, name, nextId, 0, targetFunding);
         campaignExists[nextId] = true;
         withdrawed[nextId] = false;
         nextId++;
     }
 
     //Fund a GoFundMe Campaign
-    function fundCampaign(uint _id) external payable {
-        //Campaign must exist
-        require(campaignExists[_id] == true, 'campaign must exist!');
+    function fundCampaign(uint _id) campaignDoesExist(_id) external payable {
         //Cannot fund own campaign
         require(campaigns[_id].owner != msg.sender, 'cannot fund your own campaign!');
         //Cannot fund campaign that ended
@@ -50,9 +49,7 @@ contract GoFundMe  {
     }
 
     //Withdraw from owners GoFundMe Campaign after it ends
-    function withdraw(uint _id) public {
-        //Campaign must exist
-        require(campaignExists[_id] == true, 'campaign must exist!');
+    function withdraw(uint _id) campaignDoesExist(_id) onlyCampaignEnded(_id) public {
         require(campaigns[_id].owner == msg.sender, 'you must own this campaign to withdraw!');
         require(now > campaigns[_id].date, 'campaign must have ended!');
         require(withdrawed[_id] != true, 'already withdrawed from this campaign!');
@@ -67,15 +64,15 @@ contract GoFundMe  {
     }
 
     //Refunds the contributers if the campaign fails
-    function refund(uint _id) public {
-        //Campaign must exist
-        require(campaignExists[_id] == true, 'campaign must exist!');
+    function refund(uint _id) campaignDoesExist(_id) onlyCampaignEnded(_id) public {
         //Cannot refund your own campaign
         require(campaigns[_id].owner != msg.sender, 'cannot get a refund from your own campaign!');
         //Campaign must have ended
         require(now > campaigns[_id].date, 'campaign must have ended!');
         //Must have contributed
         require(fundingPayments[msg.sender][_id] > 0, 'must contribute to refund!');
+        //Campaign must have failed for a refund
+        require(campaigns[_id].amount < campaigns[_id].targetFunding, 'campaign must have failed for a refund!');
         //Fetch the address requesting a refund
         address payable refunder = msg.sender;
         //Refund the refunder
@@ -84,4 +81,20 @@ contract GoFundMe  {
         delete fundingPayments[msg.sender][_id];
     }
 
+        //Only Admin modifier
+        modifier onlyAdmin() {
+        require(msg.sender == admin, 'only admin');
+        _;
+    }
+
+        //Campaign ended modifier
+        modifier onlyCampaignEnded(uint _id) {
+        require(now > campaigns[_id].date, 'campaign must have ended!');
+        _;
+    }
+        //Campaign exists modifier
+        modifier campaignDoesExist(uint _id) {
+        require(campaignExists[_id] == true, 'campaign must exist!');
+        _;
+    }
 }
