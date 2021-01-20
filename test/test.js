@@ -55,26 +55,34 @@ contract("GoFundMe", accounts => {
   });
 
   it("Withdraws from Campaign", async () => {
-    
-
+    let beforeBalance = await web3.eth.getBalance(accounts[0])
+    console.log('Before Balance: ', beforeBalance.toString())
+    await GoFundMeInstance.createCampaign(5, 'Cool Campaign', web3.utils.toWei('3', 'Ether'), {from:accounts[0]})
+    await GoFundMeInstance.fundCampaign(1, {from: accounts[1], value: web3.utils.toWei('3', 'Ether')})
+    await GoFundMeInstance.withdraw(1, {from: accounts[0]}).should.be.rejected
+    //Wait 6 seconds
+    await new Promise(resolve => setTimeout(resolve, 6000))
+    await GoFundMeInstance.withdraw(1, {from: accounts[0]})
+    let afterBalance = await web3.eth.getBalance(accounts[0])
+    console.log('After Balance: ', afterBalance.toString())
   });
 
   //Test Refunding from a campaign
   it("Refunds from Campaign", async () => {
     await GoFundMeInstance.createCampaign(5, 'Other Campaign', web3.utils.toWei('10', 'Ether'), {from:accounts[0]})
-    let beforeRefund = await GoFundMeInstance.campaigns(1)
+    let beforeRefund = await GoFundMeInstance.campaigns(2)
     console.log('Refund Campaign Name:', beforeRefund.name)
-    await GoFundMeInstance.fundCampaign(1, {from: accounts[1], value: web3.utils.toWei('.1', 'Ether')})
-    let contributionAmount = await GoFundMeInstance.fundingPayments(accounts[1], 1)
+    await GoFundMeInstance.fundCampaign(2, {from: accounts[1], value: web3.utils.toWei('.1', 'Ether')})
+    let contributionAmount = await GoFundMeInstance.fundingPayments(accounts[1], 2)
     console.log('Before Refund Contibution Amount', contributionAmount.toString())
-    beforeRefund = await GoFundMeInstance.campaigns(1)
+    beforeRefund = await GoFundMeInstance.campaigns(2)
     console.log('New Amount', beforeRefund.amount.toString())
-    await GoFundMeInstance.refund(1, {from: accounts[1]}).should.be.rejected
+    await GoFundMeInstance.refund(2, {from: accounts[1]}).should.be.rejected
     console.log('Waiting for the campaign to end')
     //Wait for X number of seconds
     await new Promise(resolve => setTimeout(resolve, 10000))
-    await GoFundMeInstance.refund(1, {from: accounts[1]})
-    let afterFundingAmount = await GoFundMeInstance.fundingPayments(accounts[1], 1)
+    await GoFundMeInstance.refund(2, {from: accounts[1]})
+    let afterFundingAmount = await GoFundMeInstance.fundingPayments(accounts[1], 2)
     console.log("After Refund:", afterFundingAmount.toString())
     assert.equal(afterFundingAmount, 0)
 });
