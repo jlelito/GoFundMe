@@ -115,25 +115,33 @@ class App extends Component {
 }
 
     
-
-
     //Creates Campaigns
     createCampaign = (_name, _dur, _goal) => {
+      var now = new Date()
+      var isoDateTime = new Date(now.getTime() - (now.getTimezoneOffset() * 60000)).toISOString().slice(0, -5);
+      //Calculate the number of seconds until the end date
+      const nowDate = Math.floor(
+        (new Date(isoDateTime)).getTime() / 1000
+      )
 
-      const date = Math.floor(
+      const targetDate = Math.floor(
         (new Date(_dur)).getTime() / 1000
-      );
-      
+      )
+
+      let seconds = (targetDate - nowDate)
+      console.log('Seconds Difference:', seconds)
+      console.log('Now Date:', nowDate)
+      console.log('Target Date: ', targetDate)
       
       try{
-      this.state.goFundContract.methods.createCampaign(date, _name, _goal).send({ from: this.state.account }).on('transactionHash', (hash) => {
+      this.state.goFundContract.methods.createCampaign(seconds, _name, _goal).send({ from: this.state.account }).on('transactionHash', (hash) => {
         //Check if Transaction failed or not
         console.log(hash)
         window.location.reload();
       })
-    } catch(e) {
-      window.alert(e)
-    }
+      } catch(e) {
+        window.alert(e)
+      }
     }
 
 

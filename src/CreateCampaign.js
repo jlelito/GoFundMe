@@ -9,7 +9,7 @@ class CreateCampaign extends Component {
       getCurrentTime() {
         var date = new Date()
         var isoDateTime = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().slice(0, -5);
-        console.log(isoDateTime)
+        console.log('Current Time:', isoDateTime)
         this.setState({currentDate: isoDateTime})
       }
 
