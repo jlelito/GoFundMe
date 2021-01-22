@@ -158,5 +158,4 @@ componentDidMount () {
   
   }
 }
-// Figure out missing JSX or parentheses
 export default Card;
