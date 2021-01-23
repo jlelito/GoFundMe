@@ -4,7 +4,7 @@ class CreateCampaign extends Component {
 
     async componentWillMount() {
         await this.getCurrentTime()
-      }
+    }
 
       getCurrentTime() {
         var date = new Date()
@@ -18,7 +18,7 @@ class CreateCampaign extends Component {
         this.state = {
             currentDate : null
         }
-      }
+    }
 
     render() {
       return (

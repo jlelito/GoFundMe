@@ -27,35 +27,34 @@ class Main extends Component {
   render() {
 
     return (
-      <div className='resume-section '>
+      
+      <div>
         {this.state.myCampaigns.length === 0 ? null : 
         <>
-        <b><h1 className='h1 mb-5 mt-5'>Your Campaigns!</h1></b>
-          <main role='main' className='container-fluid d-flex justify-content-center'>
-          
+        <div className='row justify-content-center'>
+          <b><h1 className='h1 mb-5 mt-5'>Your Campaigns</h1></b>
+        </div>
+          <div className='container-fluid d-flex justify-content-center collapse' id='collapseExample'>
             <div className='card-group justify-content-center'>
-
-            {this.props.campItems.map(campaign => (
-              <>
-                    {campaign.owner === this.props.account ? (
-                    <div className='row' key={campaign.id}>
-                      <Card
-                        contribution={this.props.contributionsState[campaign.id][1]}
-                        campaign = {campaign}
-                        fundCampaign={this.props.fundCampaign}
-                        account={this.props.account}
-                        withdraw={this.props.withdraw}
-                        isFinished={this.props.isFinished}
-                        withdrawed={this.props.withdrawed}
-                        
-                      />
-                    
-                  </div> 
-                    ) : null}
-              </>
-              ))}
+              {this.props.campItems.map(campaign => (
+                <>
+                      {campaign.owner === this.props.account ? (
+                      <div className='row' key={campaign.id}>
+                        <Card
+                          contribution={this.props.contributionsState[campaign.id][1]}
+                          campaign = {campaign}
+                          fundCampaign={this.props.fundCampaign}
+                          account={this.props.account}
+                          withdraw={this.props.withdraw}
+                          isFinished={this.props.isFinished}
+                          withdrawed={this.props.withdrawed}
+                        />
+                      </div> 
+                      ) : null}
+                </>
+                ))}
             </div>
-          </main>
+          </div>
           <hr />
           </>
   }

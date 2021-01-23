@@ -6,6 +6,7 @@ import Navbar from './Navbar'
 import './App.css';
 import smile from './src_images/smiley.jpg'
 import ethPic from './src_images/ETH.png';
+import money from './src_images/Donate.png'
 import CreateCampaignForm from './CreateCampaign.js';
 
 class App extends Component {
@@ -208,14 +209,14 @@ class App extends Component {
         <hr />
         <div className='row'>
             <div className='col-6'>
-              <h2 className='my-4'>Create Campaign!</h2>
+              <h2 className='my-4'>Create Campaign</h2>
               <CreateCampaignForm 
                 createCampaign={this.createCampaign}
               />
             </div>
           
           <div className='col-md-5 justify-content-center'>
-          <h2 className='my-4'>Your Contributions</h2>
+          <h2 className='my-4'>Your Contributions <img src={money} width='35' height='35' alt='eth logo'/> </h2> 
             <table className='table table-striped table-hover mt-5 mr-2'>
               <caption>Contributions</caption>
                 <thead className='thead-light'>

@@ -50,7 +50,10 @@ class Card extends Component {
                         <p>Amount Contributed: {window.web3.utils.fromWei(this.props.campaign.amount, 'Ether')} Ether<img src={ethPic} width='25' height='25' alt='eth logo'/></p>
                         <p><b>Goal: {window.web3.utils.fromWei(this.props.campaign.targetFunding, 'Ether')} Ether</b><img src={ethPic} width='25' height='25' alt='eth logo'/></p>
                         
+                        {!reachedGoal(this.props.campaign) && this.props.isFinished(this.props.campaign) ? 
+                        <ProgressBar animated variant='danger' now={this.state.progress} label={`${this.state.progress}% of Goal`}/> :
                         <ProgressBar animated variant='success' now={this.state.progress} label={`${this.state.progress}% of Goal`}/>
+                        }
                         
                           {reachedGoal(this.props.campaign) && this.props.isFinished(this.props.campaign) ? 
 
@@ -63,7 +66,7 @@ class Card extends Component {
                               }
                             </>
                           }
-                          <div className='card-footer'>
+                          <div className='card-footer text-muted'>
                           {this.props.campaign.owner === this.props.account ? (
                             <>
                               {this.props.isFinished(this.props.campaign) && this.props.withdrawed[this.props.campaign.id] === false && reachedGoal(this.props.campaign) === true ? 
@@ -88,11 +91,10 @@ class Card extends Component {
                             <>
                             {this.props.isFinished(this.props.campaign) ? (
                             <>
-                              <div className='text-success'>Campaign is Finished</div>
                               {this.props.contribution > 0 ? (
-                              <button className='btn btn-primary btn-sm float-right' onClick={() => this.props.refund(this.props.campaign.id)}>Refund</button> 
+                              <button className='btn btn-primary btn-success btn-sm float-right' onClick={() => this.props.refund(this.props.campaign.id)}>Refund</button> 
                               )
-                              : 'No funds to refund'}
+                              : null}
                             </>
                             ) : (
                             
@@ -101,6 +103,7 @@ class Card extends Component {
                                     event.preventDefault()
                                     let contribute = this.input.value.toString()
                                     this.props.fundCampaign(this.props.campaign.id, contribute)
+
                                   }}
                                 >
                               
