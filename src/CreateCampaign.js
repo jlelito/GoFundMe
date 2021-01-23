@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class CreateCampaign extends Component {
 
     async componentWillMount() {
-        await this.getCurrentTime()
+        this.getCurrentTime()
     }
 
       getCurrentTime() {
@@ -47,7 +47,7 @@ class CreateCampaign extends Component {
                         </div>
                         
                         <div className='input-group form-row justify-content-center'>
-                          <div className='form-group col-sm-5'>
+                          <div className='form-group col-md-5'>
                             <label className='text-center'>Date</label>
                               <input
                                 type='datetime-local'
@@ -60,7 +60,7 @@ class CreateCampaign extends Component {
                           </div>
                           
 
-                            <div className='form-group col-sm-2'>
+                            <div className='form-group col-md-2'>
                             <label className='text-center'>Goal (in Ether)</label>
                               <input
                               type='number'
