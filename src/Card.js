@@ -14,14 +14,6 @@ function reachedGoal(camp) {
 
 class Card extends Component {
 
-  componentDidMount() {
-    console.log('Campaign name :', this.props.campaign.name)
-    console.log('Campaign Amount :', window.web3.utils.fromWei(this.props.campaign.amount, 'Ether'))
-    console.log('Campaign Goal :', window.web3.utils.fromWei(this.props.campaign.targetFunding, 'Ether'))
-    console.log('Progress: ', getProgress(this.props.campaign.amount, this.props.campaign.targetFunding))
-    console.log('Goal Reached? ', getProgress(this.props.campaign.amount, this.props.campaign.targetFunding) >= 100)
-  }
-
   constructor(props) {
   super(props);
    this.state = {
