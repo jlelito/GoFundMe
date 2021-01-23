@@ -32,7 +32,7 @@ class Card extends Component {
                   <div className='card-header'>
                     <p>Campaign Owner:</p>
                     <img
-                      className='mr-2 img-rounded'
+                      className='mr-2 rounded'
                       width='30'
                       height='30'
                       src={`data:image/png;base64,${new Identicon(this.props.campaign.owner, 30).toString()}`}
