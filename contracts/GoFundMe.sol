@@ -53,6 +53,7 @@ contract GoFundMe  {
         require(campaigns[_id].owner == msg.sender, 'you must own this campaign to withdraw!');
         require(now > campaigns[_id].date, 'campaign must have ended!');
         require(withdrawed[_id] != true, 'already withdrawed from this campaign!');
+        require(campaigns[_id].amount >= campaigns[_id].targetFunding, 'campaign must have succeeded to withdraw!');
         //Fetch campaign owner
         address payable campOwner = campaigns[_id].owner;
         //Fetch amount to be sent to campaign owner
