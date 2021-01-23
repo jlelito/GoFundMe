@@ -1,36 +1,42 @@
-import React, { Component } from "react";
-import GoFundMe from "./abis/GoFundMe.json";
+import React, { Component } from 'react';
+import GoFundMe from './abis/GoFundMe.json';
 import Web3 from 'web3'
 import Main from './Main'
 import Navbar from './Navbar'
-import "./App.css";
-import Identicon from 'identicon.js';
+import './App.css';
 import smile from './src_images/smiley.jpg'
 import ethPic from './src_images/ETH.png';
 import CreateCampaignForm from './CreateCampaign.js';
 
-
-
 class App extends Component {
   
   async componentWillMount() {
-    
+    this.setState({loading: true})
     await this.loadWeb3()
     await this.loadBlockchainData()
     await this.updateCampaigns()
-  
+    this.setState({loading: false})
   }
 
-  
-  
+  //Loads Web3 to detect MetaMask
+  async loadWeb3() {
+    if (window.ethereum) {
+      window.web3 = new Web3(window.ethereum)
+      await window.ethereum.enable()
+    }
+    else if (window.web3) {
+      window.web3 = new Web3(window.web3.currentProvider)
+    }
+    else {
+      window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
+    }
+  }
 
   //Loads all the blockchain data
   async loadBlockchainData() {
     const web3 = window.web3
-  
     const accounts = await web3.eth.getAccounts()
     this.setState({account: accounts[0]})
-
     const networkId = await web3.eth.net.getId()
     
     // Load GoFundMe
@@ -42,73 +48,41 @@ class App extends Component {
       const tokenContract = new web3.eth.Contract(abi, address)
       this.setState({ goFundContract : tokenContract })
       
-    
       //Get contract data
       let contractAdmin = await this.state.goFundContract.methods.admin().call()
       this.setState({admin: contractAdmin})
-      
-      
+       
     } else {
           this.setState({loading:true})
           window.alert('GoFundMe contract not deployed to detected network. Please connect to network 7545')
-        
     }
       
   }
   
-  //Loads Web3 to detect MetaMask
-  async loadWeb3() {
-      if (window.ethereum) {
-        window.web3 = new Web3(window.ethereum)
-        await window.ethereum.enable()
-      }
-      else if (window.web3) {
-        window.web3 = new Web3(window.web3.currentProvider)
-      }
-      else {
-        window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
-      }
-    }
-
-    
-
     //Update the Campaign Ids and Owner List
   async updateCampaigns() {
     
     try {
-        console.log('Loading Campaigns..', this.state.goFundContract)
         let length = await this.state.goFundContract.methods.nextId().call()
-        console.log('Length:', length)
-        const camps = []
+        let camps = []
         let contribs = []
         let withdrawed = []
         for(let i=0; i<length; i++){
+          let currentContrib = await this.state.goFundContract.methods.fundingPayments(this.state.account, i).call()
+          contribs.push([i,currentContrib])
           let currentCampaign = await this.state.goFundContract.methods.campaigns(i).call()
           camps.push(currentCampaign)
           let currentWithdrawed = await this.state.goFundContract.methods.withdrawed(i).call()
           withdrawed.push(currentWithdrawed)
-          let currentContrib = await this.state.goFundContract.methods.fundingPayments(this.state.account, i).call()
-          if(currentContrib > 0){
-            contribs.push([i,currentContrib])
-          }
-
+          
         }
-        console.log('Contributions', contribs)
+        this.setState({contributionsState: contribs})
         this.setState({campaignList: camps})
         this.setState({withdrawed})
-        console.log('Campaign List:', this.state.campaignList)
-        console.log('Contributions:', contribs)
-        this.setState({contributionsState: contribs})
-        this.setState({loading: false})
-
         
-       
-        
-    
-      } 
+      }
         catch(e)  {
-        //this.setState({loading: true})
-        window.alert('Cannot update Campaigns! Error:', e)
+        window.alert('Cannot update Campaigns! Error:', e.toString())
         
       }
     
@@ -129,14 +103,10 @@ class App extends Component {
       )
 
       let seconds = (targetDate - nowDate)
-      console.log('Seconds Difference:', seconds)
-      console.log('Now Date:', nowDate)
-      console.log('Target Date: ', targetDate)
-      
-      try{
+
+      try {
       this.state.goFundContract.methods.createCampaign(seconds, _name, _goal).send({ from: this.state.account }).on('transactionHash', (hash) => {
         //Check if Transaction failed or not
-        console.log(hash)
         window.location.reload();
       })
       } catch(e) {
@@ -144,46 +114,50 @@ class App extends Component {
       }
     }
 
-
     //Fund the targeted campaign
      fundCampaign = (campId, amount) => {
-      try{
+      try {
       amount = window.web3.utils.toWei(amount, 'Ether')
       this.state.goFundContract.methods.fundCampaign(campId).send({ from: this.state.account, value: amount }).on('transactionHash', (hash) => {
         //Check if Transaction failed or not
         window.location.reload();
       })
-    } catch(e){
+    } catch(e) {
       window.alert(e)
     }
     }
 
     withdraw = (campId) => {
-      try{
+      try {
       this.state.goFundContract.methods.withdraw(campId).send({ from: this.state.account }).on('transactionHash', (hash) => {
         //Check if Transaction failed or not
         window.location.reload();
       })
-    } catch(e){
+    } catch(e) {
       window.alert(e)
     }
     }
 
     refund = (campId) => {
-      try{
+      try {
       this.state.goFundContract.methods.refund(campId).send({ from: this.state.account }).on('transactionHash', (hash) => {
         //Check if Transaction failed or not
         window.location.reload();
       })
-    } catch(e){
-      window.alert(e)
-    }
+      } catch(e) {
+        window.alert(e)
+      }
     }
 
-    isFinished = (event)  => {
+    isFinished = (campaign)  => {
       const now = new Date().getTime();
-      const eventEnd =  (new Date(parseInt(event.date) * 1000)).getTime();
-      return (eventEnd > now) ? false : true;
+      const campaignEnd =  (new Date(parseInt(campaign.date) * 1000)).getTime();
+      return (campaignEnd > now) ? false : true;
+    }
+
+    async didContribute (campId) {
+
+      return false
     }
 
     constructor(props) {
@@ -201,17 +175,13 @@ class App extends Component {
       }
     }
     
-
-    
-
-
   render() {
     if(this.state.loading) {
 
       return (
-        <div className="text-center">
-          <h1 className="text-center mt-5">Loading the Blockchain! Please Wait!</h1> 
-          <img className="center-block" src={smile}></img>
+        <div className='text-center'>
+          <h1 className='text-center mt-5'>Loading the Blockchain! Please Wait!</h1> 
+          <img className='center-block' src={smile} alt='smiley'></img>
         </div>
       )
 
@@ -229,26 +199,26 @@ class App extends Component {
     })
 
     return (
-      <div className="App">
+      <div className='App'>
         <Navbar 
           account={this.state.account}
         />
         &nbsp;
-        <h1 className="my-5">GoFundMe!</h1>
+        <h1 className='my-5'>Fundraising</h1>
         <hr />
-        <div className="row">
+        <div className='row'>
             <div className='col-6'>
-              <h2 className="my-4">Create Campaign!</h2>
+              <h2 className='my-4'>Create Campaign!</h2>
               <CreateCampaignForm 
                 createCampaign={this.createCampaign}
               />
             </div>
           
-          <div className="col-md-5 justify-content-center">
-          <h2 className="my-4">Your Contributions</h2>
-            <table className="table table-striped table-hover mt-5 mr-2">
+          <div className='col-md-5 justify-content-center'>
+          <h2 className='my-4'>Your Contributions</h2>
+            <table className='table table-striped table-hover mt-5 mr-2'>
               <caption>Contributions</caption>
-                <thead className="thead-light">
+                <thead className='thead-light'>
                   <tr>
                     <th>ID</th>
                     <th>Campaign Name</th>
@@ -258,11 +228,16 @@ class App extends Component {
               <tbody>
                 
                 {this.state.contributionsState.map(contrib => (
+                  <>
+                  {contrib[1] > 0 ? 
                   <tr key={contrib.id}>
                     <td>{contrib[0]}</td>
                     <td>{this.state.campaignList[contrib[0]].name}</td>
-                    <td>{window.web3.utils.fromWei(contrib[1], 'Ether')} ETH<img src={ethPic} width='25' height='25'/></td>
-                  </tr>
+                    <td>{window.web3.utils.fromWei(contrib[1], 'Ether')} ETH<img src={ethPic} width='25' height='25' alt='eth logo'/></td>
+                  </tr> 
+                  : null 
+                }
+                </>
                 ))}
               </tbody>
             </table>
@@ -271,13 +246,15 @@ class App extends Component {
         <hr />
         
           <Main
+                contributionsState={this.state.contributionsState}
                 campItems={this.state.campaignList}
                 account={this.state.account}
+                withdrawed={this.state.withdrawed}
                 fundCampaign={this.fundCampaign}
                 withdraw={this.withdraw}
                 refund={this.refund}
                 isFinished={this.isFinished}
-                withdrawed={this.state.withdrawed}
+                didContribute={this.didContribute}  
           />
 
       </div>

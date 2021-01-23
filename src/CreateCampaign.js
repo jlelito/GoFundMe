@@ -23,9 +23,10 @@ class CreateCampaign extends Component {
     render() {
       return (
         <>
-        <form className="mb-5" 
+        <form className='mb-5' 
                             onSubmit={(event) => {
                             event.preventDefault()
+                            this.getCurrentTime()
                             let campName, campDuration, campGoal
                             campName = this.name.value
                             campDuration = this.duration.value.toString()
@@ -33,46 +34,46 @@ class CreateCampaign extends Component {
                             this.props.createCampaign(campName, campDuration, campGoal)
               }}>
                         
-                        <div className="input-group form-row justify-content-center">
-                          <div className="form-group col-md-6 ">
+                        <div className='input-group form-row justify-content-center'>
+                          <div className='form-group col-md-6 '>
                             <label>Name of Campaign</label>
                             <input
-                            type="text"
+                            type='text'
                             ref={(name) => { this.name = name }}
-                            className="form-control form-control-lg"
-                            placeholder="Campaign Name"
+                            className='form-control form-control-lg'
+                            placeholder='Campaign Name'
                             required />
                           </div>
                         </div>
                         
-                        <div className="input-group form-row justify-content-center">
-                          <div className="form-group col-sm-5">
-                            <label className="text-center">Date</label>
+                        <div className='input-group form-row justify-content-center'>
+                          <div className='form-group col-sm-5'>
+                            <label className='text-center'>Date</label>
                               <input
-                                type="datetime-local"
+                                type='datetime-local'
                                 ref={(duration) => { this.duration = duration }}
-                                className="form-control form-control-lg"
-                                step="any"
+                                className='form-control form-control-lg'
+                                step='any'
                                 min={this.state.currentDate}
                                 required 
                               /> 
                           </div>
                           
 
-                            <div className="form-group col-sm-2">
-                            <label className="text-center">Goal (in Ether)</label>
+                            <div className='form-group col-sm-2'>
+                            <label className='text-center'>Goal (in Ether)</label>
                               <input
-                              type="number"
-                              step=".01"
+                              type='number'
+                              step='.01'
                               ref={(goal) => { this.goal = goal }}
-                              className="form-control form-control-lg"
-                              placeholder="0 ETH"
-                              min=".01"
+                              className='form-control form-control-lg'
+                              placeholder='0 ETH'
+                              min='.01'
                               required /> 
                             </div>
                           </div>
                         
-                        <button type="submit" className="btn btn-success  btn-lg">
+                        <button type='submit' className='btn btn-success  btn-lg'>
                           Create Campaign
                         </button>
               </form>

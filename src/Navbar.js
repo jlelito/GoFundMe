@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Identicon from 'identicon.js';
-import smile from './src_images/smiley.jpg'
 import pic from './src_images/download.png';
 
 class Navbar extends Component {
@@ -12,7 +11,7 @@ class Navbar extends Component {
           className='navbar-brand col-sm-3 col-md-2 mr-0'
           
         >
-          <img src={pic} width='30' height='30' className='d-inline-block align-top img-circle mr-2' alt='' />
+          <img src={pic} width='30' height='30' className='d-inline-block align-top img-circle mr-2' alt='fundraising' />
           
             GoFundMe
           
@@ -29,6 +28,7 @@ class Navbar extends Component {
                 width='30'
                 height='30'
                 src={`data:image/png;base64,${new Identicon(this.props.account, 30).toString()}`}
+                alt='identicon'
               />
               : <span></span>
             }
