@@ -32,6 +32,9 @@ class CreateCampaign extends Component {
                             campDuration = this.duration.value.toString()
                             campGoal = window.web3.utils.toWei(this.goal.value.toString(), 'Ether')
                             this.props.createCampaign(campName, campDuration, campGoal)
+                            this.name.value = null
+                            this.duration.value = null
+                            this.goal.value = null
               }}>
                         
                         <div className='input-group form-row justify-content-center'>
