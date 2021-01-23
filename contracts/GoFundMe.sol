@@ -22,14 +22,26 @@ contract GoFundMe  {
         uint targetFunding;
     }
 
+    event campaignCreated(uint duration, string name, uint goal);
+    event campaignFunded(uint id, uint amount);
+    event campaignWithdrawed(uint id, uint amount);
+    event campaignRefunded(uint id, uint amount);
+
     //Creates a GoFundMe Campaign
     function createCampaign(uint _duration, string memory name, uint targetFunding) public {
         require(campaignExists[nextId] != true, 'campaign already exists!');
+        //Set the end date
         uint endDate = now + _duration;
+        //Create the campaign
         campaigns[nextId] = Campaign(msg.sender,  endDate, name, nextId, 0, targetFunding);
+        //Update campaign exists
         campaignExists[nextId] = true;
+        //Update withdrawed
         withdrawed[nextId] = false;
+        //Increment nextId
         nextId++;
+        //Emit Campaign created event
+        emit campaignCreated(_duration, name, targetFunding);
     }
 
     //Fund a GoFundMe Campaign
@@ -45,7 +57,9 @@ contract GoFundMe  {
         //Track the funding payments for that address
         fundingPayments[msg.sender][_id] += msg.value;
         //Track Contributors
-        contributors[msg.sender][_id] = true;  
+        contributors[msg.sender][_id] = true;
+        //Emit Campaign funded event
+        emit campaignFunded(_id, msg.value);
     }
 
     //Withdraw from owners GoFundMe Campaign after it ends
@@ -62,6 +76,8 @@ contract GoFundMe  {
         campOwner.transfer(campAmount);
         //Change withdrawed to true
         withdrawed[_id] = true;
+        //Emit Campaign withdrawed event
+        emit campaignWithdrawed(_id, campAmount);
     }
 
     //Refunds the contributers if the campaign fails
@@ -80,6 +96,8 @@ contract GoFundMe  {
         refunder.transfer(fundingPayments[msg.sender][_id]);
         //Clear the refunder contributions for that campaign
         delete fundingPayments[msg.sender][_id];
+        //Emit Campaign refunded event
+        emit campaignRefunded(_id, fundingPayments[msg.sender][_id]);
     }
 
         //Only Admin modifier
