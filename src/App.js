@@ -52,6 +52,10 @@ class App extends Component {
       //Get contract data
       let contractAdmin = await this.state.goFundContract.methods.admin().call()
       this.setState({admin: contractAdmin})
+
+      let currentEthBalance = await web3.eth.getBalance(accounts[0])
+      currentEthBalance = window.web3.utils.fromWei(currentEthBalance, 'Ether')
+      this.setState({currentEthBalance: currentEthBalance})
        
     } else {
           this.setState({loading:true})
@@ -68,15 +72,16 @@ class App extends Component {
         let camps = []
         let contribs = []
         let withdrawed = []
-        for(let i=0; i<length; i++){
+
+        for(let i=0; i<length; i++) {
           let currentContrib = await this.state.goFundContract.methods.fundingPayments(this.state.account, i).call()
           contribs.push([i,currentContrib])
           let currentCampaign = await this.state.goFundContract.methods.campaigns(i).call()
           camps.push(currentCampaign)
           let currentWithdrawed = await this.state.goFundContract.methods.withdrawed(i).call()
           withdrawed.push(currentWithdrawed)
-          
         }
+        
         this.setState({contributionsState: contribs})
         this.setState({campaignList: camps})
         this.setState({withdrawed})
@@ -197,7 +202,8 @@ class App extends Component {
         contributionsState:[],
         withdrawed:{},
         loading: true,
-        currentDate:null,
+        currentDate: null,
+        currentEthBalance: '0',
         hash: null,
         action: null
       }
@@ -231,6 +237,7 @@ class App extends Component {
         <Navbar 
           account={this.state.account}
           hash={this.state.hash}
+          balance={this.state.currentEthBalance}
           action={this.state.action}
         />
         &nbsp;
