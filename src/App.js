@@ -107,8 +107,9 @@ class App extends Component {
 
       try {
       this.state.goFundContract.methods.createCampaign(seconds, _name, _goal).send({ from: this.state.account }).on('transactionHash', (hash) => {
-        //Check if Transaction failed or not
-        window.location.reload();
+        this.setState({hash:hash})
+        this.setState({action: 'Created Campaign'})
+        
       })
       } catch(e) {
         window.alert(e)
@@ -120,8 +121,9 @@ class App extends Component {
       try {
       amount = window.web3.utils.toWei(amount, 'Ether')
       this.state.goFundContract.methods.fundCampaign(campId).send({ from: this.state.account, value: amount }).on('transactionHash', (hash) => {
-        //Check if Transaction failed or not
-        window.location.reload();
+        this.setState({hash:hash})
+        this.setState({action: 'Contributed'})
+        
       })
     } catch(e) {
       window.alert(e)
@@ -131,8 +133,9 @@ class App extends Component {
     withdraw = (campId) => {
       try {
       this.state.goFundContract.methods.withdraw(campId).send({ from: this.state.account }).on('transactionHash', (hash) => {
-        //Check if Transaction failed or not
-        window.location.reload();
+        this.setState({hash:hash})
+        this.setState({action: 'Withdrawed'})
+       
       })
     } catch(e) {
       window.alert(e)
@@ -142,8 +145,9 @@ class App extends Component {
     refund = (campId) => {
       try {
       this.state.goFundContract.methods.refund(campId).send({ from: this.state.account }).on('transactionHash', (hash) => {
-        //Check if Transaction failed or not
-        window.location.reload();
+        this.setState({hash:hash})
+        this.setState({action: 'Refunded Contribution'})
+       
       })
       } catch(e) {
         window.alert(e)
@@ -154,11 +158,6 @@ class App extends Component {
       const now = new Date().getTime();
       const campaignEnd =  (new Date(parseInt(campaign.date) * 1000)).getTime();
       return (campaignEnd > now) ? false : true;
-    }
-
-    async didContribute (campId) {
-
-      return false
     }
 
     constructor(props) {
@@ -172,7 +171,9 @@ class App extends Component {
         contributionsState:[],
         withdrawed:{},
         loading: true,
-        currentDate:null
+        currentDate:null,
+        hash: null,
+        action: null
       }
     }
     
@@ -203,6 +204,8 @@ class App extends Component {
       <div className='App'>
         <Navbar 
           account={this.state.account}
+          hash={this.state.hash}
+          action={this.state.action}
         />
         &nbsp;
         <h1 className='my-5'>Fundraising</h1>
