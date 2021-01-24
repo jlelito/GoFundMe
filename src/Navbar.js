@@ -13,15 +13,6 @@ class Navbar extends Component {
             Fundraising
         </div>
 
-        {this.props.action === null ? null : 
-        <div className="justify-content-center text-white">
-            {this.props.action} :  
-          <a className="text-green ml-2" href={`https://ropsten.etherscan.io/tx/${this.props.hash}`} target="_blank">
-            {this.props.hash}
-          </a> 
-        </div>
-        }
-
         <ul className='navbar-nav px-3'>
           <li className='nav-item text-nowrap d-none d-sm-none d-sm-block'>
           { this.props.account
