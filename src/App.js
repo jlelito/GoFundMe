@@ -8,6 +8,7 @@ import smile from './src_images/smiley.jpg'
 import ethPic from './src_images/ETH.png';
 import money from './src_images/Donate.png'
 import CreateCampaignForm from './CreateCampaign.js';
+import Notification from './Notification.js';
 
 class App extends Component {
   
@@ -114,6 +115,7 @@ class App extends Component {
       this.state.goFundContract.methods.createCampaign(seconds, _name, _goal).send({ from: this.state.account }).on('transactionHash', (hash) => {
         this.setState({hash:hash})
         this.setState({action: 'Created Campaign'})
+        this.showNotification()
         this.state.goFundContract.events.campaignCreated({}, async (error, event) => {
           let campID = event.returnValues.id
           let name = event.returnValues.name
@@ -121,6 +123,7 @@ class App extends Component {
           let goal = event.returnValues.goal
           window.alert('Created Campaign! \n\n' + 'Campaign ID: ' + campID + '\nName: ' + name +  '\nDuration: ' + duration + '\nGoal: ' + window.web3.utils.fromWei(goal, 'Ether'))
           await this.updateCampaigns()
+          
       })
         
       })
@@ -136,6 +139,7 @@ class App extends Component {
       this.state.goFundContract.methods.fundCampaign(campId).send({ from: this.state.account, value: amount }).on('transactionHash', (hash) => {
         this.setState({hash:hash})
         this.setState({action: 'Contributed'})
+        this.showNotification()
         this.state.goFundContract.events.campaignFunded({}, async (error, event) => {
           let campID = event.returnValues.id
           let amount = event.returnValues.amount
@@ -154,6 +158,7 @@ class App extends Component {
       this.state.goFundContract.methods.withdraw(campId).send({ from: this.state.account }).on('transactionHash', (hash) => {
         this.setState({hash:hash})
         this.setState({action: 'Withdrawed'})
+        this.showNotification()
         this.state.goFundContract.events.campaignWithdrawed({}, async (error, event) => {
           let campID = event.returnValues.id
           let amount = event.returnValues.amount
@@ -172,6 +177,7 @@ class App extends Component {
       this.state.goFundContract.methods.refund(campId).send({ from: this.state.account }).on('transactionHash', (hash) => {
         this.setState({hash:hash})
         this.setState({action: 'Refunded Contribution'})
+        this.showNotification()
         this.state.goFundContract.events.campaignRefunded({}, async (error, event) => {
           let campID = event.returnValues.id
           let amount = event.returnValues.amount
@@ -191,8 +197,13 @@ class App extends Component {
       return (campaignEnd > now) ? false : true;
     }
 
+    showNotification = () => {
+      this.notificationOne.current.updateShowNotify()
+    }
+
     constructor(props) {
       super(props)
+      this.notificationOne = React.createRef()
       this.state = {
         account: '0x0',
         admin:'0x0',
@@ -205,7 +216,8 @@ class App extends Component {
         currentDate: null,
         currentEthBalance: '0',
         hash: null,
-        action: null
+        action: null,
+        showNotification: false
       }
     }
     
@@ -242,8 +254,15 @@ class App extends Component {
         />
         &nbsp;
         <h1 className='my-5'>Fundraising</h1>
+        <Notification 
+            showNotification={this.state.showNotification}
+            action={this.state.action}
+            hash={this.state.hash}
+            ref={this.notificationOne}
+        />
         <hr />
         <div className='row'>
+          
             <div className='col-6'>
               <h2 className='my-4'>Create Campaign</h2>
               <CreateCampaignForm 
