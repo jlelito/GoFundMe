@@ -1,26 +1,33 @@
 import React, { Component } from 'react';
 import Card from './Card.js';
 import magnify from './src_images/magnify.png';
+import PageNav from './PageNav.js';
+import OwnedCampaigns from './OwnedCampaigns.js';
 
 class Main extends Component {
 
   async componentWillMount() {
-    
+    await this.setMyCampaigns()
+  }
+
+  async setMyCampaigns () {
     let ownedCampaigns = []
     this.props.campItems.forEach(element => {
       if (element.owner === this.props.account){
         ownedCampaigns.push(element)
       }
-    });
-    this.setState({myCampaigns: ownedCampaigns})
-    
+    })
+    await this.setState({myCampaigns: ownedCampaigns})
   }
+
 
   constructor(props) {
     super(props)
+    
     this.state = {
       myCampaigns: [],
-      filteredCampaigns: this.props.campItems
+      filteredCampaigns: this.props.campItems,
+      open: false
     }
   }
 
@@ -32,56 +39,45 @@ class Main extends Component {
         {this.state.myCampaigns.length === 0 ? null : 
         <>
         <div className='row justify-content-center'>
-          <b><h1 className='h1 mb-5 mt-5'>Your Campaigns</h1></b>
+          <b><h1 className='h1 mb-5 mt-5' id='owned-camps-title'>Your Campaigns</h1></b>  
         </div>
-          <div className='container-fluid d-flex justify-content-center collapse' id='collapseExample'>
-            <div className='card-group justify-content-center'>
-              {this.props.campItems.map(campaign => (
-                <>
-                      {campaign.owner === this.props.account ? (
-                      <div className='row' key={campaign.id}>
-                        <Card
-                          contribution={this.props.contributionsState[campaign.id][1]}
-                          campaign = {campaign}
-                          fundCampaign={this.props.fundCampaign}
-                          account={this.props.account}
-                          withdraw={this.props.withdraw}
-                          isFinished={this.props.isFinished}
-                          withdrawed={this.props.withdrawed}
-                        />
-                      </div> 
-                      ) : null}
-                </>
-                ))}
-            </div>
-          </div>
+            <OwnedCampaigns 
+              campaigns={this.state.myCampaigns}
+              contributionsState={this.props.contributionsState}
+              fundCampaign={this.props.fundCampaign}
+              account={this.props.account}
+              withdraw={this.props.withdraw}
+              isFinished={this.props.isFinished}
+              withdrawed={this.props.withdrawed}
+            
+            />
           <hr />
           </>
-  }
-          
+        }
+        
         <b><h1 className='h1 mb-5 mt-5'>Active Campaigns</h1></b>
         <form className='mb-3 form-inline' onSubmit={(event) => {
-                            event.preventDefault()
-                            let searchInput
-                            searchInput = this.searchInput.value.toString()
-                            let newFilteredCampaigns = this.props.campItems.filter(campaign => 
-                              campaign.name.toLowerCase().includes(searchInput.toLowerCase())
-                            )
-                          
-                            this.setState({filteredCampaigns: newFilteredCampaigns})                
-                          }}>
-        <div className='container'>
-          <div className='form-row justify-content-center mb-1'>
-            <div className='col-auto'>
-              <label>Search</label> 
-              <div className='input-group'>
-                <img src={magnify} className='float-right mt-1' width='35' height='35' alt='magnify glass'/>
-                <input className='form-control form-control' type='text' placeholder='Search...' ref={(searchInput) => { this.searchInput = searchInput }}
-                  aria-label='Search'>
-                </input>
+            event.preventDefault()
+            let searchInput
+            searchInput = this.searchInput.value.toString()
+            let newFilteredCampaigns = this.props.campItems.filter(campaign => 
+              campaign.name.toLowerCase().includes(searchInput.toLowerCase())
+            )
+          
+            this.setState({filteredCampaigns: newFilteredCampaigns})                
+          }}>
+          <div className='container'>
+            <div className='form-row justify-content-center mb-1'>
+              <div className='col-auto'>
+                <label>Search</label> 
+                <div className='input-group'>
+                  <img src={magnify} className='float-right mt-1' width='35' height='35' alt='magnify glass'/>
+                  <input className='form-control form-control' type='text' placeholder='Search...' ref={(searchInput) => { this.searchInput = searchInput }}
+                    aria-label='Search'>
+                  </input>
+                </div>
               </div>
-            </div>
-            
+              
               <div className='col-auto'>
                 <button type='submit' className='btn btn-primary mt-4' >
                   Search
@@ -89,9 +85,9 @@ class Main extends Component {
               </div>
             </div>
           </div>
-          </form>
+        </form>
+
           <main role='main' className='container-fluid d-flex justify-content-center'>
-          
             <div className='card-group justify-content-center'>
             {this.state.filteredCampaigns.map(campaign => (
               <>
@@ -111,14 +107,13 @@ class Main extends Component {
                     </div>
               </>
             ))}
-
             </div>
           </main>
           <hr />
+
           <b><h1 className='h1 mb-5 mt-5'>Inactive Campaigns</h1></b>
           <main role='main' className='container-fluid d-flex justify-content-center'>
             <div className='card-group justify-content-center'>
-              
             {this.props.campItems.map(campaign => (
               <>
                   <div key={campaign.id}>{this.props.isFinished(campaign) === true ? (
