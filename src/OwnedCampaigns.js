@@ -39,7 +39,7 @@ class OwnedCampaigns extends Component {
 
     render() {
         return (
-        <div className='container'>
+       
         <>
         <div className='container-fluid d-flex justify-content-center' id="owned-camps-container">
             <div className='card-group justify-content-center'>
@@ -63,7 +63,7 @@ class OwnedCampaigns extends Component {
             
             </div>
             
-          </div>
+        </div>
         <PageNav 
             postsPerPage={this.state.postsPerPage}
             totalPosts={this.props.campaigns.length}
@@ -71,7 +71,7 @@ class OwnedCampaigns extends Component {
             currentPage={this.state.currentPage}
         />
         </>
-        </div>
+        
     )
     }
   }
