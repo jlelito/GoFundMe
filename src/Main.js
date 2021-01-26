@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Card from './Card.js';
 import magnify from './src_images/magnify.png';
-import PageNav from './PageNav.js';
 import OwnedCampaigns from './OwnedCampaigns.js';
+import ActiveCampaigns from './ActiveCampaigns.js';
 
 class Main extends Component {
 
@@ -87,7 +87,7 @@ class Main extends Component {
           </div>
         </form>
 
-          <main role='main' className='container-fluid d-flex justify-content-center'>
+          {/* <main role='main' className='container-fluid d-flex justify-content-center'>
             <div className='card-group justify-content-center'>
             {this.state.filteredCampaigns.map(campaign => (
               <>
@@ -108,7 +108,16 @@ class Main extends Component {
               </>
             ))}
             </div>
-          </main>
+          </main> */}
+          <ActiveCampaigns
+            campaigns={this.state.filteredCampaigns}
+            contributionsState={this.props.contributionsState}
+            fundCampaign={this.props.fundCampaign}
+            account={this.props.account}
+            withdraw={this.props.withdraw}
+            isFinished={this.props.isFinished}
+            withdrawed={this.props.withdrawed}
+          />
           <hr />
 
           <b><h1 className='h1 mb-5 mt-5'>Inactive Campaigns</h1></b>

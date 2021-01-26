@@ -15,13 +15,13 @@ const PageNav = ({postsPerPage, totalPosts, paginate, currentPage}) => {
                     <>
                         {currentPage === number ? 
                             <li key={number} className='page-item active'>
-                            <a onClick={() => paginate(number)} href='#owned-camps-container' className='page-link'>
+                            <a onClick={() => paginate(number)}  className='page-link'>
                                 {number}
                             </a>
                             </li> 
                             : 
                             <li key={number} className='page-item'>
-                            <a onClick={() => paginate(number)} href='#owned-camps-container' className='page-link'>
+                            <a onClick={() => paginate(number)}  className='page-link'>
                                 {number}
                             </a>
                             </li>
