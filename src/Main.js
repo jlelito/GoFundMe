@@ -86,29 +86,6 @@ class Main extends Component {
             </div>
           </div>
         </form>
-
-          {/* <main role='main' className='container-fluid d-flex justify-content-center'>
-            <div className='card-group justify-content-center'>
-            {this.state.filteredCampaigns.map(campaign => (
-              <>
-                    <div key={campaign.id}>{this.props.isFinished(campaign) === false ? (
-                      <div className='row'>
-                        <Card
-                          contribution={this.props.contributionsState[campaign.id][1]}
-                          campaign = {campaign}
-                          fundCampaign={this.props.fundCampaign}
-                          account={this.props.account}
-                          withdraw={this.props.withdraw}
-                          isFinished={this.props.isFinished}
-                          withdrawed={this.props.withdrawed}
-                        />
-                      </div> 
-                      ) : null}
-                    </div>
-              </>
-            ))}
-            </div>
-          </main> */}
           <ActiveCampaigns
             campaigns={this.state.filteredCampaigns}
             contributionsState={this.props.contributionsState}
