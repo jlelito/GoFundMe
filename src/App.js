@@ -115,15 +115,16 @@ class App extends Component {
       this.state.goFundContract.methods.createCampaign(seconds, _name, _goal).send({ from: this.state.account }).on('transactionHash', (hash) => {
         this.setState({hash:hash})
         this.setState({action: 'Created Campaign'})
+        this.setState({notifyName: _name})
         this.showNotification()
         this.state.goFundContract.events.campaignCreated({}, async (error, event) => {
           let campID = event.returnValues.id
           let name = event.returnValues.name
           let duration = event.returnValues.duration
           let goal = event.returnValues.goal
-          window.alert('Created Campaign! \n\n' + 'Campaign ID: ' + campID + '\nName: ' + name +  '\nDuration: ' + duration + '\nGoal: ' + window.web3.utils.fromWei(goal, 'Ether'))
           await this.updateCampaigns()
           
+          console.log('Campaigns Updated')
       })
         
       })
@@ -138,12 +139,13 @@ class App extends Component {
       amount = window.web3.utils.toWei(amount, 'Ether')
       this.state.goFundContract.methods.fundCampaign(campId).send({ from: this.state.account, value: amount }).on('transactionHash', (hash) => {
         this.setState({hash:hash})
-        this.setState({action: 'Contributed'})
+        this.setState({action: 'Contributed to Campaign'})
+        this.setState({amount})
         this.showNotification()
         this.state.goFundContract.events.campaignFunded({}, async (error, event) => {
           let campID = event.returnValues.id
           let amount = event.returnValues.amount
-          window.alert('Funded Campaign! \n\n' + 'Campaign ID: ' + campID + '\nAmount: ' + window.web3.utils.fromWei(amount, 'Ether') + ' ETH')
+          
           await this.updateCampaigns()
       })
         
@@ -162,7 +164,7 @@ class App extends Component {
         this.state.goFundContract.events.campaignWithdrawed({}, async (error, event) => {
           let campID = event.returnValues.id
           let amount = event.returnValues.amount
-          window.alert('Withdrawed from Campaign! \n\n' + 'Campaign ID: ' + campID + '\nAmount: ' + window.web3.utils.fromWei(amount, 'Ether') + ' ETH')
+          this.setState({amount})
           await this.updateCampaigns()
       })
        
@@ -181,7 +183,7 @@ class App extends Component {
         this.state.goFundContract.events.campaignRefunded({}, async (error, event) => {
           let campID = event.returnValues.id
           let amount = event.returnValues.amount
-          window.alert('Received refund from Campaign! \n\n' + 'Campaign ID: ' + campID + '\nAmount: ' + window.web3.utils.fromWei(amount, 'Ether') + ' ETH')
+          this.setState({amount})
           await this.updateCampaigns()
       })
        
@@ -217,7 +219,9 @@ class App extends Component {
         currentEthBalance: '0',
         hash: null,
         action: null,
-        showNotification: false
+        showNotification: false,
+        notifyAmount:null,
+        notifyName:null
       }
     }
     
@@ -259,6 +263,8 @@ class App extends Component {
             action={this.state.action}
             hash={this.state.hash}
             ref={this.notificationOne}
+            amount={this.state.notifyAmount}
+            name={this.state.notifyName}
         />
         <hr />
         <div className='row'>
