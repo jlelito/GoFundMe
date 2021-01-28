@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Identicon from 'identicon.js';
 import pic from './src_images/download.png';
 import ethlogo from './src_images/ETH.png';
+import bell from './src_images/bell-icon.png';
 
 class Navbar extends Component {
 
@@ -30,9 +31,10 @@ class Navbar extends Component {
             </small>
             
             <div id="account" className="row">
+              <img className="mb-1" src={bell} width='25' height='25'alt='bell'/>
               <div id="balance" className="text-white">ETH Balance: {Number(this.props.balance).toFixed(3)} </div>
-              <img className="mb-1" src={ethlogo} width='25' height='25'/>
-              <div className="text-white ml-2">Ropsten Faucet: <a href="https://faucet.ropsten.be/" target="_blank">Faucet</a></div>
+              <img className="mb-1" src={ethlogo} width='25' height='25'alt='eth-logo'/>
+              <div className="text-white ml-2">Ropsten Faucet: <a href="https://faucet.ropsten.be/" target="_blank" rel="noreferrer">Faucet</a></div>
             </div>
           </li>
         </ul>

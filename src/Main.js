@@ -6,7 +6,7 @@ import ActiveCampaigns from './ActiveCampaigns.js';
 
 class Main extends Component {
 
-  async componentWillMount() {
+  async componentDidMount() {
     await this.setMyCampaigns()
   }
 

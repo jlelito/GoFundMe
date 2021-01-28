@@ -12,7 +12,7 @@ import Notification from './Notification.js';
 
 class App extends Component {
   
-  async componentWillMount() {
+  async componentDidMount() {
     this.setState({loading: true})
     await this.loadWeb3()
     await this.loadBlockchainData()
@@ -112,19 +112,15 @@ class App extends Component {
       let seconds = (targetDate - nowDate)
 
       try {
-      this.state.goFundContract.methods.createCampaign(seconds, _name, _goal).send({ from: this.state.account }).on('transactionHash', (hash) => {
+      this.state.goFundContract.methods.createCampaign(seconds, _name, _goal).send({ from: this.state.account }).on('transactionHash', async (hash) => {
         this.setState({hash:hash})
         this.setState({action: 'Created Campaign'})
         this.setState({notifyName: _name})
         this.showNotification()
         this.state.goFundContract.events.campaignCreated({}, async (error, event) => {
-          let campID = event.returnValues.id
-          let name = event.returnValues.name
-          let duration = event.returnValues.duration
-          let goal = event.returnValues.goal
-          await this.updateCampaigns()
           
-          console.log('Campaigns Updated')
+          await this.updateCampaigns()
+
       })
         
       })
@@ -134,7 +130,7 @@ class App extends Component {
     }
 
     //Fund the targeted campaign
-     fundCampaign = (campId, amount) => {
+    fundCampaign = (campId, amount) => {
       try {
       amount = window.web3.utils.toWei(amount, 'Ether')
       this.state.goFundContract.methods.fundCampaign(campId).send({ from: this.state.account, value: amount }).on('transactionHash', (hash) => {
@@ -143,8 +139,6 @@ class App extends Component {
         this.setState({amount})
         this.showNotification()
         this.state.goFundContract.events.campaignFunded({}, async (error, event) => {
-          let campID = event.returnValues.id
-          let amount = event.returnValues.amount
           
           await this.updateCampaigns()
       })
@@ -162,7 +156,6 @@ class App extends Component {
         this.setState({action: 'Withdrawed'})
         this.showNotification()
         this.state.goFundContract.events.campaignWithdrawed({}, async (error, event) => {
-          let campID = event.returnValues.id
           let amount = event.returnValues.amount
           this.setState({amount})
           await this.updateCampaigns()
@@ -181,7 +174,6 @@ class App extends Component {
         this.setState({action: 'Refunded Contribution'})
         this.showNotification()
         this.state.goFundContract.events.campaignRefunded({}, async (error, event) => {
-          let campID = event.returnValues.id
           let amount = event.returnValues.amount
           this.setState({amount})
           await this.updateCampaigns()
@@ -237,14 +229,12 @@ class App extends Component {
 
     }
 
-    
-
     window.ethereum.on('accountsChanged', accounts => {
       this.setState({account: accounts[0]})
       window.location.reload();
     });
 
-    window.ethereum.on('networkChanged', networkId => {
+    window.ethereum.on('chainChanged', networkId => {
       window.location.reload();
     })
 
@@ -308,15 +298,15 @@ class App extends Component {
         <hr />
         
           <Main
-                contributionsState={this.state.contributionsState}
-                campItems={this.state.campaignList}
-                account={this.state.account}
-                withdrawed={this.state.withdrawed}
-                fundCampaign={this.fundCampaign}
-                withdraw={this.withdraw}
-                refund={this.refund}
-                isFinished={this.isFinished}
-                didContribute={this.didContribute}  
+              contributionsState={this.state.contributionsState}
+              campItems={this.state.campaignList}
+              account={this.state.account}
+              withdrawed={this.state.withdrawed}
+              fundCampaign={this.fundCampaign}
+              withdraw={this.withdraw}
+              refund={this.refund}
+              isFinished={this.isFinished}
+              didContribute={this.didContribute}  
           />
 
       </div>

@@ -47,15 +47,16 @@ class OwnedCampaigns extends Component {
                 <>
                       
                     <div className='row' key={campaign.id}>
-                    <Card
-                        contribution={this.props.contributionsState[campaign.id][1]}
-                        campaign = {campaign}
-                        fundCampaign={this.props.fundCampaign}
-                        account={this.props.account}
-                        withdraw={this.props.withdraw}
-                        isFinished={this.props.isFinished}
-                        withdrawed={this.props.withdrawed}
-                    />
+                        <Card
+                            key={campaign.id}
+                            contribution={this.props.contributionsState[campaign.id][1]}
+                            campaign = {campaign}
+                            fundCampaign={this.props.fundCampaign}
+                            account={this.props.account}
+                            withdraw={this.props.withdraw}
+                            isFinished={this.props.isFinished}
+                            withdrawed={this.props.withdrawed}
+                        />
                     </div> 
                       
                 </>

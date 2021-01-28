@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Toast } from 'react-bootstrap';
+import { Toast } from 'react-bootstrap';
 import bell from './src_images/bell-icon.png';
 
 
@@ -34,7 +34,7 @@ class Notification extends Component {
                 <Toast.Body>
                 <div className='row'>
                     <div className='col-12 float-left'>
-                        <div><b>{this.props.action}</b></div>
+                        <div className='text-success'><b>{this.props.action}</b></div>
 
                         {this.props.name != null ? 
                         <div>Campaign Name: {this.props.name}</div>
@@ -47,7 +47,7 @@ class Notification extends Component {
                             </div>
                         : null}
                         Transaction:
-                        <a className="ml-2" href={`https://ropsten.etherscan.io/tx/${this.props.hash}`} target="_blank">
+                        <a className="ml-2" href={`https://ropsten.etherscan.io/tx/${this.props.hash}`} target="_blank" rel="noreferrer">
                             Link
                         </a>
                         
