@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Identicon from 'identicon.js';
-import pic from './src_images/download.png';
-import { ProgressBar } from './../node_modules/react-bootstrap';
-import ethPic from './src_images/ETH.png';
+import pic from '../src_images/download.png';
+import { ProgressBar } from 'react-bootstrap';
+import ethPic from '../src_images/ETH.png';
 
 function getProgress(amount, target) {
   return ((amount/target)*100).toFixed(1);
@@ -46,8 +46,8 @@ class Card extends Component {
                       
                       <p><b>{this.props.campaign.name}</b></p>
                       <p>Date Ending: {(new Date(parseInt(this.props.campaign.date) * 1000)).toLocaleString()}</p>
-                      <p>Amount Contributed: {window.web3.utils.fromWei(this.props.campaign.amount, 'Ether')} Ether<img src={ethPic} width='25' height='25' alt='eth logo'/></p>
-                      <p><b>Goal: {window.web3.utils.fromWei(this.props.campaign.targetFunding, 'Ether')} Ether</b><img src={ethPic} width='25' height='25' alt='eth logo'/></p>
+                      <p>Amount Contributed: {this.props.web3.utils.fromWei(this.props.campaign.amount, 'Ether')} Ether<img src={ethPic} width='25' height='25' alt='eth logo'/></p>
+                      <p><b>Goal: {this.props.web3.utils.fromWei(this.props.campaign.targetFunding, 'Ether')} Ether</b><img src={ethPic} width='25' height='25' alt='eth logo'/></p>
                       
                       {!reachedGoal(this.props.campaign) && this.props.isFinished(this.props.campaign) ? 
                       <ProgressBar animated variant='danger' now={this.state.progress} label={`${this.state.progress}% of Goal`}/> :
@@ -130,7 +130,7 @@ class Card extends Component {
                         
                     <div className='py-2'>
                       <small className='float-left mt-1 text-muted'>
-                        <b>Contributed: {window.web3.utils.fromWei(this.props.contribution, 'Ether')} Ether</b>
+                        <b>Contributed: {this.props.web3.utils.fromWei(this.props.contribution, 'Ether')} Ether</b>
                       </small>
                     </div>
                   </div>

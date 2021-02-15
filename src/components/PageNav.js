@@ -12,21 +12,21 @@ const PageNav = ({postsPerPage, totalPosts, paginate, currentPage}) => {
         <nav id='page-navbar'>
             <ul className='pagination justify-content-center'>
                 {pageNumbers.map(number => (
-                    <>
+                    <React.Fragment key={number}>
                         {currentPage === number ? 
-                            <li key={number} className='page-item active'>
+                            <li className='page-item active'>
                                 <button onClick={() => paginate(number)} className='page-link'>
                                     {number}
                                 </button>
                             </li> 
                             : 
-                            <li key={number} className='page-item'>
+                            <li className='page-item'>
                                 <button onClick={() => paginate(number)} className='page-link'>
                                     {number}
                                 </button>
                             </li>
                         }
-                    </>
+                    </React.Fragment>
                 ))}  
             </ul>
         </nav>

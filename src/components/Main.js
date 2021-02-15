@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Card from './Card.js';
-import magnify from './src_images/magnify.png';
+import magnify from '../src_images/magnify.png';
 import OwnedCampaigns from './OwnedCampaigns.js';
 import ActiveCampaigns from './ActiveCampaigns.js';
 
@@ -41,7 +41,8 @@ class Main extends Component {
         <div className='row justify-content-center'>
           <b><h1 className='h1 mb-5 mt-5' id='owned-camps-title'>Your Campaigns</h1></b>  
         </div>
-            <OwnedCampaigns 
+            <OwnedCampaigns
+              web3={this.props.web3}
               campaigns={this.state.myCampaigns}
               contributionsState={this.props.contributionsState}
               fundCampaign={this.props.fundCampaign}
@@ -87,6 +88,7 @@ class Main extends Component {
           </div>
         </form>
           <ActiveCampaigns
+            web3={this.props.web3}
             campaigns={this.state.filteredCampaigns}
             contributionsState={this.props.contributionsState}
             fundCampaign={this.props.fundCampaign}
@@ -101,10 +103,11 @@ class Main extends Component {
           <main role='main' className='container-fluid d-flex justify-content-center'>
             <div className='card-group justify-content-center'>
             {this.props.campItems.map(campaign => (
-              <>
+              <React.Fragment key={campaign.id}> 
                   <div key={campaign.id}>{this.props.isFinished(campaign) === true ? (
                     <div className='row'>
                         <Card
+                          web3={this.props.web3}
                           contribution={this.props.contributionsState[campaign.id][1]}
                           campaign = {campaign}
                           fundCampaign={this.props.fundCampaign}
@@ -118,8 +121,8 @@ class Main extends Component {
                     </div> 
                       ) : null}
                   </div>
-              </>
-                ))}
+              </React.Fragment>
+              ))}
             </div>
           </main>
       </div>

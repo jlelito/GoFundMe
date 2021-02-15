@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import PageNav from './PageNav.js'
-import Card from './Card.js'
+import PageNav from './PageNav.js';
+import Card from './Card.js';
 
 class OwnedCampaigns extends Component {
 
@@ -9,7 +9,7 @@ class OwnedCampaigns extends Component {
         this.state = {
             currentPage: 1,
             postsPerPage: 3,
-            currentCampaigns:[]
+            currentCampaigns: []
         }
         this.paginate = this.paginate.bind(this)
     }
@@ -18,12 +18,7 @@ class OwnedCampaigns extends Component {
         const indexOfLastPost = this.state.currentPage * this.state.postsPerPage
         const indexOfFirstPost = indexOfLastPost - this.state.postsPerPage
         const currentPosts = this.props.campaigns.slice(indexOfFirstPost, indexOfLastPost)
-        console.log('Current Campaign List : ', currentPosts)
-        console.log('Setting the current campaigns state')
-        await this.setState({currentCampaigns: currentPosts}, () => {
-        console.log('Current Camp state:', this.state.currentCampaigns);
-        console.log('Current Page:', this.state.currentPage)
-        })
+        await this.setState({currentCampaigns: currentPosts})
     }
 
     //Change Page
@@ -36,7 +31,6 @@ class OwnedCampaigns extends Component {
         await this.setState({currentCampaigns: currentPosts})
     }
 
-
     render() {
         return (
        
@@ -44,25 +38,22 @@ class OwnedCampaigns extends Component {
         <div className='container-fluid d-flex justify-content-center' id="active-camps-container">
             <div className='card-group justify-content-center'>
               {this.state.currentCampaigns.map(campaign => (
-                <>
-                      
+                <React.Fragment key={campaign.id}>  
                     <div className='row' key={campaign.id}>
-                    <Card
-                        contribution={this.props.contributionsState[campaign.id][1]}
-                        campaign = {campaign}
-                        fundCampaign={this.props.fundCampaign}
-                        account={this.props.account}
-                        withdraw={this.props.withdraw}
-                        isFinished={this.props.isFinished}
-                        withdrawed={this.props.withdrawed}
-                    />
-                    </div> 
-                      
-                </>
+                        <Card
+                            web3={this.props.web3}
+                            contribution={this.props.contributionsState[campaign.id][1]}
+                            campaign = {campaign}
+                            fundCampaign={this.props.fundCampaign}
+                            account={this.props.account}
+                            withdraw={this.props.withdraw}
+                            isFinished={this.props.isFinished}
+                            withdrawed={this.props.withdrawed}
+                        />
+                    </div>   
+                </React.Fragment>
                 ))}
-            
             </div>
-            
         </div>
         <PageNav 
             postsPerPage={this.state.postsPerPage}
