@@ -22,7 +22,7 @@ contract GoFundMe  {
         uint targetFunding;
     }
 
-    event campaignCreated(uint duration, string name, uint goal);
+    event campaignCreated(uint id, uint duration, string name, uint goal);
     event campaignFunded(uint id, uint amount);
     event campaignWithdrawed(uint id, uint amount);
     event campaignRefunded(uint id, uint amount);
@@ -38,10 +38,10 @@ contract GoFundMe  {
         campaignExists[nextId] = true;
         //Update withdrawed
         withdrawed[nextId] = false;
+        //Emit Campaign created event
+        emit campaignCreated(nextId, _duration, name, targetFunding);
         //Increment nextId
         nextId++;
-        //Emit Campaign created event
-        emit campaignCreated(_duration, name, targetFunding);
     }
 
     //Fund a GoFundMe Campaign
