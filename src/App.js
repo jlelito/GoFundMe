@@ -51,7 +51,11 @@ class App extends Component {
     this.setState({network: networkId})
 
     if(this.state.network !== 3) {
+      let web3
       this.setState({wrongNetwork: true})
+      let infuraURL = `https://ropsten.infura.io/v3/${process.env.REACT_APP_INFURA_API_KEY}`
+      web3 = new Web3(new Web3.providers.HttpProvider(infuraURL))
+      await this.setState({web3})
     }
   }
 
@@ -131,7 +135,7 @@ class App extends Component {
           this.setState({trxStatus: 'Failed'})
         }
       }).on('error', (error) => {
-          window.alert('Error! Could not change house price!')
+          window.alert('Error! Could not create campaign! Please change network to Ropsten')
       }).on('confirmation', (confirmNum) => {
           if(confirmNum > 10) {
             this.setState({confirmNum : '10+'})
@@ -165,7 +169,7 @@ class App extends Component {
           this.setState({trxStatus: 'Failed'})
         }
       }).on('error', (error) => {
-          window.alert('Error! Could not change house price!')
+          window.alert('Error! Could not fund campaign! Please change network to Ropsten')
       }).on('confirmation', (confirmNum) => {
           if(confirmNum > 10) {
             this.setState({confirmNum : '10+'})
@@ -197,7 +201,7 @@ class App extends Component {
           this.setState({trxStatus: 'Failed'})
         }
       }).on('error', (error) => {
-          window.alert('Error! Could not change house price!')
+          window.alert('Error! Could not withdraw from campaign! Please change network to Ropsten')
       }).on('confirmation', (confirmNum) => {
           if(confirmNum > 10) {
             this.setState({confirmNum : '10+'})
@@ -229,7 +233,7 @@ class App extends Component {
           this.setState({trxStatus: 'Failed'})
         }
       }).on('error', (error) => {
-          window.alert('Error! Could not change house price!')
+          window.alert('Error! Could not refund from campaign! Please change network to Ropsten')
       }).on('confirmation', (confirmNum) => {
           if(confirmNum > 10) {
             this.setState({confirmNum : '10+'})
@@ -318,7 +322,8 @@ class App extends Component {
         {this.state.loading ? <Loading />
         :
         <>
-          <h1 className='my-5'>Fundraising</h1>
+          &nbsp;
+          <h1 className='my-2'>Fundraising</h1>
           <Notification 
               showNotification={this.state.showNotification}
               action={this.state.action}
@@ -380,6 +385,10 @@ class App extends Component {
               isFinished={this.isFinished}
               didContribute={this.didContribute}  
           />
+
+          <div className='row justify-content-left'>
+            <span className='ml-5'>Contract on Etherscan.io: </span> <a href={`https://ropsten.etherscan.io/address/${this.state.contractAddress}`} className='ml-1' target='_blank' rel='noopener noreferrer'>Contract</a>
+          </div>
         </>
         }
       </div>
