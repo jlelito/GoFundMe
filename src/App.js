@@ -262,8 +262,8 @@ class App extends Component {
       this.state = {
         web3: null,
         isConnected: null,
-        account: '0x0',
-        admin:'0x0',
+        account: null,
+        admin:null,
         goFundContract: {},
         contractAddress: null,
         campaignList: [],
