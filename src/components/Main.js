@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Card from './Card.js';
-import magnify from '../src_images/magnify.png';
 import OwnedCampaigns from './OwnedCampaigns.js';
 import ActiveCampaigns from './ActiveCampaigns.js';
 
@@ -44,7 +43,11 @@ class Main extends Component {
             <OwnedCampaigns
               web3={this.props.web3}
               campaigns={this.state.myCampaigns}
-              contributionsState={this.props.contributionsState}
+              {...this.props.contributionsState.length > 1 ?
+              <>
+                contributionsState={this.props.contributionsState}
+              </>
+              : null}
               fundCampaign={this.props.fundCampaign}
               account={this.props.account}
               withdraw={this.props.withdraw}
@@ -57,36 +60,7 @@ class Main extends Component {
         }
         
         <b><h1 className='h1 mb-5 mt-5'>Active Campaigns</h1></b>
-        <form className='mb-3 form-inline' onSubmit={(event) => {
-            event.preventDefault()
-            let searchInput
-            searchInput = this.searchInput.value.toString()
-            let newFilteredCampaigns = this.props.campItems.filter(campaign => 
-              campaign.name.toLowerCase().includes(searchInput.toLowerCase())
-            )
-          
-            this.setState({filteredCampaigns: newFilteredCampaigns})                
-          }}>
-          <div className='container'>
-            <div className='form-row justify-content-center mb-1'>
-              <div className='col-auto'>
-                <label>Search</label> 
-                <div className='input-group'>
-                  <img src={magnify} className='float-right mt-1' width='35' height='35' alt='magnify glass'/>
-                  <input className='form-control form-control' type='text' placeholder='Search...' ref={(searchInput) => { this.searchInput = searchInput }}
-                    aria-label='Search'>
-                  </input>
-                </div>
-              </div>
-              
-              <div className='col-auto'>
-                <button type='submit' className='btn btn-primary mt-4' >
-                  Search
-                </button>
-              </div>
-            </div>
-          </div>
-        </form>
+        
           <ActiveCampaigns
             web3={this.props.web3}
             campaigns={this.state.filteredCampaigns}
