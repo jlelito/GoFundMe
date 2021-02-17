@@ -85,8 +85,10 @@ class App extends Component {
           let withdrawed = []
 
           for(let i=0; i<length; i++) {
-            let currentContrib = await this.state.goFundContract.methods.fundingPayments(this.state.account, i).call()
-            contribs.push([i,currentContrib])
+            if(this.state.account != null && this.state.account != undefined) {
+              let currentContrib = await this.state.goFundContract.methods.fundingPayments(this.state.account, i).call()
+              contribs.push([i,currentContrib])
+            }
             let currentCampaign = await this.state.goFundContract.methods.campaigns(i).call()
             camps.push(currentCampaign)
             let currentWithdrawed = await this.state.goFundContract.methods.withdrawed(i).call()
@@ -94,10 +96,10 @@ class App extends Component {
           }
           
           await this.setState({contributionsState: contribs, campaignList: camps, withdrawed})
-      }
+        }
         catch(e)  {
           window.alert('Cannot update Campaigns! Error:', e.toString())
-      }
+        }
     
   }
 
@@ -257,9 +259,9 @@ class App extends Component {
         goFundContract: {},
         contractAddress: null,
         campaignList: [],
-        contributors:{},
-        contributionsState:[],
-        withdrawed:{},
+        contributors: {},
+        contributionsState: [],
+        withdrawed: {},
         loading: true,
         currentDate: null,
         currentEthBalance: '0',
