@@ -118,9 +118,7 @@ class App extends Component {
 
     try {
     this.state.goFundContract.methods.createCampaign(seconds, _name, _goal).send({ from: this.state.account }).on('transactionHash', async (hash) => {
-      this.setState({hash:hash})
-      this.setState({action: 'Created Campaign', trxStatus: 'Pending'})
-      this.setState({notifyName: _name})
+      this.setState({hash, action: 'Created Campaign', trxStatus: 'Pending'})
       this.showNotification()
       this.state.goFundContract.events.campaignCreated({}, async (error, event) => {
         
@@ -153,9 +151,7 @@ class App extends Component {
     try {
     amount = this.state.web3.utils.toWei(amount, 'Ether')
     this.state.goFundContract.methods.fundCampaign(campId).send({ from: this.state.account, value: amount }).on('transactionHash', (hash) => {
-      this.setState({hash:hash})
-      this.setState({action: 'Contributed to Campaign', trxStatus: 'Pending'})
-      this.setState({amount})
+      this.setState({hash, action: 'Contributed to Campaign', trxStatus: 'Pending'})
       this.showNotification()
       this.state.goFundContract.events.campaignFunded({}, async (error, event) => {
         
@@ -185,12 +181,9 @@ class App extends Component {
   withdraw = (campId) => {
     try {
     this.state.goFundContract.methods.withdraw(campId).send({ from: this.state.account }).on('transactionHash', (hash) => {
-      this.setState({hash:hash})
-      this.setState({action: 'Withdrawed', trxStatus: 'Pending'})
+      this.setState({hash, action: 'Withdrawed', trxStatus: 'Pending'})
       this.showNotification()
       this.state.goFundContract.events.campaignWithdrawed({}, async (error, event) => {
-        let amount = event.returnValues.amount
-        this.setState({amount})
         await this.updateCampaigns()
     })
       }).on('receipt', async (receipt) => {
@@ -217,12 +210,9 @@ class App extends Component {
   refund = (campId) => {
     try {
     this.state.goFundContract.methods.refund(campId).send({ from: this.state.account }).on('transactionHash', (hash) => {
-      this.setState({hash:hash})
-      this.setState({action: 'Refunded Contribution', trxStatus: 'Pending'})
+      this.setState({hash, action: 'Refunded Contribution', trxStatus: 'Pending'})
       this.showNotification()
       this.state.goFundContract.events.campaignRefunded({}, async (error, event) => {
-        let amount = event.returnValues.amount
-        this.setState({amount})
         await this.updateCampaigns()
     })
       }).on('receipt', async (receipt) => {
@@ -263,7 +253,7 @@ class App extends Component {
         web3: null,
         isConnected: null,
         account: null,
-        admin:null,
+        admin: null,
         goFundContract: {},
         contractAddress: null,
         campaignList: [],
