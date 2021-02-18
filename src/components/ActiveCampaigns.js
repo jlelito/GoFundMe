@@ -31,17 +31,26 @@ class OwnedCampaigns extends Component {
         await this.setState({currentCampaigns: currentPosts})
     }
 
-    async filterCampaigns(search, ActiveCamps, InactiveCamps) {
+    async filterCampaigns(search, ActiveCamps, InactiveCamps, OwnedCamps) {
         let newFilteredCampaigns = this.props.campaigns.filter(campaign => 
             campaign.name.toLowerCase().includes(search.toLowerCase())
         )
-            if (ActiveCamps && !InactiveCamps) {
-                newFilteredCampaigns =  newFilteredCampaigns.filter(campaign => this.props.isFinished(campaign) === false)
-            } else if (!ActiveCamps && InactiveCamps) {
-                newFilteredCampaigns = newFilteredCampaigns.filter(campaign => this.props.isFinished(campaign) === true)
-            } else {
-                console.log('nothing checked!')
-            }
+
+        if (!ActiveCamps && !InactiveCamps && !OwnedCamps) {
+            newFilteredCampaigns = []
+        }
+
+        if (ActiveCamps && !InactiveCamps) {
+            newFilteredCampaigns =  newFilteredCampaigns.filter(campaign => this.props.isFinished(campaign) === false)
+        }  
+        
+        if (!ActiveCamps && InactiveCamps) {
+            newFilteredCampaigns = newFilteredCampaigns.filter(campaign => this.props.isFinished(campaign) === true)
+        } 
+
+        if (OwnedCamps) {
+            newFilteredCampaigns =  newFilteredCampaigns.filter(campaign => campaign.owner === this.props.account)
+        }
 
         await this.setState({currentCampaigns: newFilteredCampaigns})
         await this.paginate(1) 
@@ -88,11 +97,12 @@ class OwnedCampaigns extends Component {
         <>
         <form className='mb-3 form-inline' onSubmit={async (event) => {
             event.preventDefault()
-            let searchInput, activeCampsInput, inactiveCampsInput
+            let searchInput, activeCampsInput, inactiveCampsInput, ownedCampsInput
             searchInput = this.searchInput.value.toString()
             activeCampsInput = this.activeCheckInput.checked
             inactiveCampsInput = this.inactiveCheckInput.checked
-            await this.filterCampaigns(searchInput, activeCampsInput, inactiveCampsInput) 
+            ownedCampsInput = this.ownedCheckInput.checked
+            await this.filterCampaigns(searchInput, activeCampsInput, inactiveCampsInput, ownedCampsInput) 
           }}>
           <div className='container'>
             <div className='form-row justify-content-center mb-1'>
@@ -108,6 +118,10 @@ class OwnedCampaigns extends Component {
                         <div className='form-check'>
                             <input className='form-check-input' type='checkbox' id='inlineCheckbox2' defaultChecked ref={(inactiveCheckInput) => { this.inactiveCheckInput = inactiveCheckInput }} />
                             <label className='form-check-label' htmlFor='inlineCheckbox2'>Inactive Campaigns</label>
+                        </div>
+                        <div className='form-check'>
+                            <input className='form-check-input' type='checkbox' id='inlineCheckbox2' ref={(ownedCheckInput) => { this.ownedCheckInput = ownedCheckInput }} />
+                            <label className='form-check-label' htmlFor='inlineCheckbox2'>My Campaigns</label>
                         </div>
                     </div>
                 </div>
@@ -145,7 +159,6 @@ class OwnedCampaigns extends Component {
                         Date Ending (Oldest to Newest)
                     </option>                            
                 </select>
-            
             </div>
         </div>
 
