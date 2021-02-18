@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import GoFundMe from './abis/GoFundMe.json';
 import Web3 from 'web3';
-import Main from './components/Main';
 import Navbar from './components/Navbar';
 import './App.css';
 import ethPic from './src_images/ETH.png';
@@ -10,6 +9,7 @@ import CreateCampaignForm from './components/CreateCampaign.js';
 import Notification from './components/Notification.js';
 import ConnectionBanner from '@rimble/connection-banner';
 import Loading from './components/Loading.js';
+import Campaigns from './components/ActiveCampaigns.js';
 
 class App extends Component {
   
@@ -85,7 +85,7 @@ class App extends Component {
           let withdrawed = []
 
           for(let i=0; i<length; i++) {
-            if(this.state.account != null && this.state.account != undefined) {
+            if(this.state.account !== null && this.state.account !== undefined) {
               let currentContrib = await this.state.goFundContract.methods.fundingPayments(this.state.account, i).call()
               contribs.push([i,currentContrib])
             }
@@ -364,18 +364,16 @@ class App extends Component {
             </div>
           </div>   
           <hr />
-        
-          <Main
-              web3={this.state.web3}
-              contributionsState={this.state.contributionsState}
-              campItems={this.state.campaignList}
-              account={this.state.account}
-              withdrawed={this.state.withdrawed}
-              fundCampaign={this.fundCampaign}
-              withdraw={this.withdraw}
-              refund={this.refund}
-              isFinished={this.isFinished}
-              didContribute={this.didContribute}  
+
+          <Campaigns
+            web3={this.state.web3}
+            campaigns={this.state.campaignList}
+            contributionsState={this.state.contributionsState}
+            fundCampaign={this.fundCampaign}
+            account={this.state.account}
+            withdraw={this.withdraw}
+            isFinished={this.isFinished}
+            withdrawed={this.state.withdrawed}
           />
 
           <div className='row justify-content-left'>
