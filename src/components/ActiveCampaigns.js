@@ -25,19 +25,37 @@ class OwnedCampaigns extends Component {
     //Change Page
     async paginate (pageNumber) {
         await this.setState({currentPage: pageNumber})
-        console.log('Current Page:', this.state.currentPage)
         const indexOfLastPost = this.state.currentPage * this.state.postsPerPage
         const indexOfFirstPost = indexOfLastPost - this.state.postsPerPage
-        const currentPosts = this.props.campaigns.slice(indexOfFirstPost, indexOfLastPost)
+        const currentPosts = this.state.currentCampaigns.slice(indexOfFirstPost, indexOfLastPost)
         await this.setState({currentCampaigns: currentPosts})
     }
 
-    async sortCampaigns(search, ActiveCamps, InactiveCamps) {
-        let newFilteredCampaigns = this.props.campItems.filter(campaign => 
+    async filterCampaigns(search, ActiveCamps, InactiveCamps) {
+        let newFilteredCampaigns = this.props.campaigns.filter(campaign => 
             campaign.name.toLowerCase().includes(search.toLowerCase())
         )
 
-        this.setState({filteredCampaigns: newFilteredCampaigns}) 
+            if (ActiveCamps && InactiveCamps){
+                console.log('both checked!')
+            }
+            else if (ActiveCamps && !InactiveCamps) {
+                newFilteredCampaigns =  newFilteredCampaigns.filter(campaign => this.props.isFinished(campaign) === false)
+                console.log('Active Camps:', newFilteredCampaigns)
+            } else if (!ActiveCamps && InactiveCamps) {
+                newFilteredCampaigns = newFilteredCampaigns.filter(campaign => this.props.isFinished(campaign) === true)
+                console.log('InActive Camps:', newFilteredCampaigns)
+            } else {
+                console.log('nothing checked!')
+            }
+
+        await this.setState({currentCampaigns: newFilteredCampaigns})
+        console.log('Current Campaigns state:', this.state.currentCampaigns)
+        await this.paginate(1) 
+    }
+
+    async sortCampaigns(choice) {
+        
     }
 
     render() {
@@ -53,8 +71,8 @@ class OwnedCampaigns extends Component {
             inactiveCampsInput = this.inactiveCheckInput.checked
             console.log('Active input', activeCampsInput)
             console.log('InActive input', inactiveCampsInput)
-            await this.sortCampaigns(searchInput, activeCampsInput, inactiveCampsInput)
-            this.paginate(1) 
+            await this.filterCampaigns(searchInput, activeCampsInput, inactiveCampsInput)
+            
           }}>
           <div className='container'>
             <div className='form-row justify-content-center mb-1'>
@@ -64,11 +82,11 @@ class OwnedCampaigns extends Component {
                     <input className='form-control form-control' type='text' placeholder='Search...' ref={(searchInput) => { this.searchInput = searchInput }} aria-label='Search'/>
                     <div className='col'>
                         <div className='form-check'>
-                            <input className='form-check-input' type='checkbox' id='inlineCheckbox1' ref={(activeCheckInput) => { this.activeCheckInput = activeCheckInput }} />
+                            <input className='form-check-input' type='checkbox' id='inlineCheckbox1' defaultChecked ref={(activeCheckInput) => { this.activeCheckInput = activeCheckInput }} />
                             <label className='form-check-label' for='inlineCheckbox1'>Active Campaigns</label>
                         </div>
                         <div className='form-check'>
-                            <input className='form-check-input' type='checkbox' id='inlineCheckbox2' ref={(inactiveCheckInput) => { this.inactiveCheckInput = inactiveCheckInput }} />
+                            <input className='form-check-input' type='checkbox' id='inlineCheckbox2' defaultChecked ref={(inactiveCheckInput) => { this.inactiveCheckInput = inactiveCheckInput }} />
                             <label className='form-check-label' for='inlineCheckbox2'>Inactive Campaigns</label>
                         </div>
                     </div>
@@ -76,7 +94,7 @@ class OwnedCampaigns extends Component {
               </div>
               
               <div className='col-auto'>
-                <button type='submit' className='btn btn-primary mt-2' >
+                <button type='search' className='btn btn-primary mt-2' >
                   Search
                 </button>
               </div>
@@ -85,13 +103,20 @@ class OwnedCampaigns extends Component {
         </form>
 
         <div className='container-fluid d-flex justify-content-center' id='active-camps-container'>
+            {this.state.currentCampaigns.length === 0 ? <h1 className='mt-4'>No Campaigns Found!</h1> : 
             <div className='card-group justify-content-center'>
               {this.state.currentCampaigns.map(campaign => (
                 <React.Fragment key={campaign.id}>  
                     <div className='row' key={campaign.id}>
                         <Card
-                            web3={this.props.web3}                     
-                            contribution={this.props.contributionsState[campaign.id][1]}
+                            web3={this.props.web3}  
+                            
+                            {...this.props.contributionsState.length > 1 ?
+                                <>
+                                  contribution={this.props.contributionsState[campaign.id][1]}
+                                </>
+                            : null}
+                            
                             campaign = {campaign}
                             fundCampaign={this.props.fundCampaign}
                             account={this.props.account}
@@ -103,10 +128,11 @@ class OwnedCampaigns extends Component {
                 </React.Fragment>
                 ))}
             </div>
+            }
         </div>
         <PageNav 
             postsPerPage={this.state.postsPerPage}
-            totalPosts={this.props.campaigns.length}
+            totalPosts={this.state.currentCampaigns.length}
             paginate={this.paginate}
             currentPage={this.state.currentPage}
         />
