@@ -35,44 +35,64 @@ class OwnedCampaigns extends Component {
         let newFilteredCampaigns = this.props.campaigns.filter(campaign => 
             campaign.name.toLowerCase().includes(search.toLowerCase())
         )
-
-            if (ActiveCamps && InactiveCamps){
-                console.log('both checked!')
-            }
-            else if (ActiveCamps && !InactiveCamps) {
+            if (ActiveCamps && !InactiveCamps) {
                 newFilteredCampaigns =  newFilteredCampaigns.filter(campaign => this.props.isFinished(campaign) === false)
-                console.log('Active Camps:', newFilteredCampaigns)
             } else if (!ActiveCamps && InactiveCamps) {
                 newFilteredCampaigns = newFilteredCampaigns.filter(campaign => this.props.isFinished(campaign) === true)
-                console.log('InActive Camps:', newFilteredCampaigns)
             } else {
                 console.log('nothing checked!')
             }
 
         await this.setState({currentCampaigns: newFilteredCampaigns})
-        console.log('Current Campaigns state:', this.state.currentCampaigns)
         await this.paginate(1) 
     }
 
-    async sortCampaigns(choice) {
-        
-    }
+    sortCampaigns (choice) {
+        //Sort Contributed Descending 
+        if(choice === 'amountContributed') {
+          let sortedList = this.state.currentCampaigns.sort(function(a,b){
+            return b.amount - a.amount
+          })
+          this.setState({currentCampaigns: sortedList})
+        }
+        //Sort Goal Descending
+        else if(choice === 'goal') {
+          let sortedList = this.state.currentCampaigns.sort(function(a,b){
+            return b.targetFunding - a.targetFunding
+          })
+          this.setState({currentCampaigns: sortedList})
+        }
+        //Sort End Date New to Old
+        else if(choice === 'dateNewToOld') {
+          let sortedList = this.state.currentCampaigns.sort(function(a,b){
+            return a.date - b.date
+          })
+          this.setState({currentCampaigns: sortedList})
+        }
+        //Sort End Date Old to New
+        else if(choice === 'dateOldToNew') {
+          let sortedList = this.state.currentCampaigns.sort(function(a,b){
+            return b.date - a.date
+          })
+          this.setState({currentCampaigns: sortedList})
+        }
+        //Nothing selected
+        else {
+          console.log('Nothing Chosen!')
+        }
+      }
 
     render() {
         return (
        
         <>
-
         <form className='mb-3 form-inline' onSubmit={async (event) => {
             event.preventDefault()
             let searchInput, activeCampsInput, inactiveCampsInput
             searchInput = this.searchInput.value.toString()
             activeCampsInput = this.activeCheckInput.checked
             inactiveCampsInput = this.inactiveCheckInput.checked
-            console.log('Active input', activeCampsInput)
-            console.log('InActive input', inactiveCampsInput)
-            await this.filterCampaigns(searchInput, activeCampsInput, inactiveCampsInput)
-            
+            await this.filterCampaigns(searchInput, activeCampsInput, inactiveCampsInput) 
           }}>
           <div className='container'>
             <div className='form-row justify-content-center mb-1'>
@@ -83,11 +103,11 @@ class OwnedCampaigns extends Component {
                     <div className='col'>
                         <div className='form-check'>
                             <input className='form-check-input' type='checkbox' id='inlineCheckbox1' defaultChecked ref={(activeCheckInput) => { this.activeCheckInput = activeCheckInput }} />
-                            <label className='form-check-label' for='inlineCheckbox1'>Active Campaigns</label>
+                            <label className='form-check-label' htmlFor='inlineCheckbox1'>Active Campaigns</label>
                         </div>
                         <div className='form-check'>
                             <input className='form-check-input' type='checkbox' id='inlineCheckbox2' defaultChecked ref={(inactiveCheckInput) => { this.inactiveCheckInput = inactiveCheckInput }} />
-                            <label className='form-check-label' for='inlineCheckbox2'>Inactive Campaigns</label>
+                            <label className='form-check-label' htmlFor='inlineCheckbox2'>Inactive Campaigns</label>
                         </div>
                     </div>
                 </div>
@@ -101,6 +121,33 @@ class OwnedCampaigns extends Component {
             </div>
           </div>
         </form>
+        <div className='form-group row float-right'>
+            <div className='mr-5'>
+                <label className='mr-2'>Sort by:</label>
+                <select className='form-control-sm mb-2 mr-1' id='campaignSort' 
+                    ref={(sortInputAmount) => { this.sortInputAmount = sortInputAmount }}
+                    onChange={async () => {
+                    this.sortCampaigns(this.sortInputAmount.value.toString())
+                    await this.paginate(1)
+                    }
+                }
+                >
+                    <option value='amountContributed'>
+                        Amount Contributed
+                    </option>
+                    <option value='goal'>
+                        Goal
+                    </option> 
+                    <option value='dateNewToOld'>
+                        Date Ending (Newest to Oldest)
+                    </option> 
+                    <option value='dateOldToNew'>
+                        Date Ending (Oldest to Newest)
+                    </option>                            
+                </select>
+            
+            </div>
+        </div>
 
         <div className='container-fluid d-flex justify-content-center' id='active-camps-container'>
             {this.state.currentCampaigns.length === 0 ? <h1 className='mt-4'>No Campaigns Found!</h1> : 
@@ -137,6 +184,7 @@ class OwnedCampaigns extends Component {
             currentPage={this.state.currentPage}
         />
         <div className='row float-right'>
+            
             <label className='mr-2'>Campaigns Per Page:</label>
             <select className='form-control-sm mb-2 mr-5' id='CampaignsPerPage' 
                 ref={(campsPerPage) => { this.campsPerPage = campsPerPage }}
