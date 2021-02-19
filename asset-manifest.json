@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/GoFundMe/static/css/main.ab7136cd.chunk.css",
-    "main.js": "/GoFundMe/static/js/main.d220bada.chunk.js",
-    "main.js.map": "/GoFundMe/static/js/main.d220bada.chunk.js.map",
+    "main.js": "/GoFundMe/static/js/main.6ee0196d.chunk.js",
+    "main.js.map": "/GoFundMe/static/js/main.6ee0196d.chunk.js.map",
     "runtime-main.js": "/GoFundMe/static/js/runtime-main.22b2cc16.js",
     "runtime-main.js.map": "/GoFundMe/static/js/runtime-main.22b2cc16.js.map",
     "static/css/2.20aa2d7b.chunk.css": "/GoFundMe/static/css/2.20aa2d7b.chunk.css",
-    "static/js/2.a986be5d.chunk.js": "/GoFundMe/static/js/2.a986be5d.chunk.js",
-    "static/js/2.a986be5d.chunk.js.map": "/GoFundMe/static/js/2.a986be5d.chunk.js.map",
+    "static/js/2.62c95bcd.chunk.js": "/GoFundMe/static/js/2.62c95bcd.chunk.js",
+    "static/js/2.62c95bcd.chunk.js.map": "/GoFundMe/static/js/2.62c95bcd.chunk.js.map",
     "index.html": "/GoFundMe/index.html",
     "static/css/2.20aa2d7b.chunk.css.map": "/GoFundMe/static/css/2.20aa2d7b.chunk.css.map",
     "static/css/main.ab7136cd.chunk.css.map": "/GoFundMe/static/css/main.ab7136cd.chunk.css.map",
-    "static/js/2.a986be5d.chunk.js.LICENSE.txt": "/GoFundMe/static/js/2.a986be5d.chunk.js.LICENSE.txt",
+    "static/js/2.62c95bcd.chunk.js.LICENSE.txt": "/GoFundMe/static/js/2.62c95bcd.chunk.js.LICENSE.txt",
     "static/media/Donate.346f231f.png": "/GoFundMe/static/media/Donate.346f231f.png",
     "static/media/ETH.91dd9993.png": "/GoFundMe/static/media/ETH.91dd9993.png",
     "static/media/checkmark.bd5b95a7.png": "/GoFundMe/static/media/checkmark.bd5b95a7.png",
@@ -21,8 +21,8 @@
   "entrypoints": [
     "static/js/runtime-main.22b2cc16.js",
     "static/css/2.20aa2d7b.chunk.css",
-    "static/js/2.a986be5d.chunk.js",
+    "static/js/2.62c95bcd.chunk.js",
     "static/css/main.ab7136cd.chunk.css",
-    "static/js/main.d220bada.chunk.js"
+    "static/js/main.6ee0196d.chunk.js"
   ]
 }
