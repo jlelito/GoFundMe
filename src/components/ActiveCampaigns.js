@@ -184,6 +184,7 @@ class Campaigns extends Component {
                             withdraw={this.props.withdraw}
                             isFinished={this.props.isFinished}
                             withdrawed={this.props.withdrawed}
+                            isConnected={this.props.isConnected}
                         />
                     </div>   
                 </React.Fragment>

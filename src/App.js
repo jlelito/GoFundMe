@@ -336,6 +336,7 @@ class App extends Component {
               <CreateCampaignForm 
                 createCampaign={this.createCampaign}
                 web3={this.state.web3}
+                isConnected={this.state.isConnected}
               />
             </div>
             
@@ -381,6 +382,7 @@ class App extends Component {
             isFinished={this.isFinished}
             withdrawed={this.state.withdrawed}
             filterCampaigns={this.filterCampaigns}
+            isConnected={this.state.isConnected}
           />
 
           <div className='row justify-content-left'>

@@ -44,7 +44,9 @@ class CreateCampaign extends Component {
                     ref={(name) => { this.name = name }}
                     className='form-control form-control-lg'
                     placeholder='Campaign Name'
-                    required />
+                    required
+                    disabled={!this.props.isConnected}
+                    />
                   </div>
                 </div>
                 
@@ -57,7 +59,8 @@ class CreateCampaign extends Component {
                         className='form-control form-control-lg'
                         step='any'
                         min={this.state.currentDate}
-                        required 
+                        required
+                        disabled={!this.props.isConnected}
                       /> 
                   </div>
                   
@@ -70,11 +73,13 @@ class CreateCampaign extends Component {
                       className='form-control form-control-lg'
                       placeholder='0 ETH'
                       min='.01'
-                      required /> 
+                      required 
+                      disabled={!this.props.isConnected}
+                      /> 
                     </div>
                 </div>
                 
-                <button type='submit' className='btn btn-success  btn-lg'>
+                <button type='submit' className='btn btn-success  btn-lg' disabled={!this.props.isConnected}>
                   Create Campaign
                 </button>
           </form>

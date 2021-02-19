@@ -103,6 +103,7 @@ class Card extends Component {
                                 }}
                               >
                             
+                            
                               <input
                                 className='mt-3' 
                                 type='number'
@@ -110,10 +111,11 @@ class Card extends Component {
                                 ref={(input) => { this.input = input }}
                                 placeholder='0 ETH'
                                 required
+                                disabled={!this.props.isConnected}
                               />
                               
-                              <button className='btn btn-primary btn-md float-left pt-0 mt-3 mr-1' type='submit'>
-                                Contribute!
+                              <button className='btn btn-primary btn-md float-left pt-0 mt-3 mr-1' type='submit' disabled={!this.props.isConnected}>
+                                Contribute
                               </button>
                             </form>
                           
