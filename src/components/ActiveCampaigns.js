@@ -3,7 +3,7 @@ import PageNav from './PageNav.js';
 import Card from './Card.js';
 import magnify from '../src_images/magnify.png';
 
-class OwnedCampaigns extends Component {
+class Campaigns extends Component {
 
     constructor(props) {
         super(props)
@@ -27,7 +27,7 @@ class OwnedCampaigns extends Component {
         await this.setState({currentPage: pageNumber})
         const indexOfLastPost = this.state.currentPage * this.state.postsPerPage
         const indexOfFirstPost = indexOfLastPost - this.state.postsPerPage
-        const currentPosts = this.state.currentCampaigns.slice(indexOfFirstPost, indexOfLastPost)
+        const currentPosts = this.props.filteredCampaigns.slice(indexOfFirstPost, indexOfLastPost)
         await this.setState({currentCampaigns: currentPosts})
     }
 
@@ -52,38 +52,38 @@ class OwnedCampaigns extends Component {
             newFilteredCampaigns =  newFilteredCampaigns.filter(campaign => campaign.owner === this.props.account)
         }
 
-        await this.setState({currentCampaigns: newFilteredCampaigns})
-        await this.paginate(1) 
+        this.props.filterCampaigns(newFilteredCampaigns)
+        await this.paginate(1)
     }
 
     sortCampaigns (choice) {
         //Sort Contributed Descending 
         if(choice === 'amountContributed') {
-          let sortedList = this.state.currentCampaigns.sort(function(a,b){
+          let sortedList = this.props.filteredCampaigns.sort(function(a,b){
             return b.amount - a.amount
           })
-          this.setState({currentCampaigns: sortedList})
+          this.props.filterCampaigns(sortedList)
         }
         //Sort Goal Descending
         else if(choice === 'goal') {
-          let sortedList = this.state.currentCampaigns.sort(function(a,b){
+          let sortedList = this.props.filteredCampaigns.sort(function(a,b){
             return b.targetFunding - a.targetFunding
           })
-          this.setState({currentCampaigns: sortedList})
+           this.props.filterCampaigns(sortedList)
         }
         //Sort End Date New to Old
         else if(choice === 'dateNewToOld') {
-          let sortedList = this.state.currentCampaigns.sort(function(a,b){
+          let sortedList = this.props.filteredCampaigns.sort(function(a,b){
             return a.date - b.date
           })
-          this.setState({currentCampaigns: sortedList})
+          this.props.filterCampaigns(sortedList)
         }
         //Sort End Date Old to New
         else if(choice === 'dateOldToNew') {
-          let sortedList = this.state.currentCampaigns.sort(function(a,b){
+          let sortedList = this.props.filteredCampaigns.sort(function(a,b){
             return b.date - a.date
           })
-          this.setState({currentCampaigns: sortedList})
+          this.props.filterCampaigns(sortedList)
         }
         //Nothing selected
         else {
@@ -95,6 +95,7 @@ class OwnedCampaigns extends Component {
         return (
        
         <>
+        <h1 className='mb-5'>Campaigns</h1>
         <form className='mb-3 form-inline' onSubmit={async (event) => {
             event.preventDefault()
             let searchInput, activeCampsInput, inactiveCampsInput, ownedCampsInput
@@ -120,8 +121,8 @@ class OwnedCampaigns extends Component {
                             <label className='form-check-label' htmlFor='inlineCheckbox2'>Inactive Campaigns</label>
                         </div>
                         <div className='form-check'>
-                            <input className='form-check-input' type='checkbox' id='inlineCheckbox2' ref={(ownedCheckInput) => { this.ownedCheckInput = ownedCheckInput }} />
-                            <label className='form-check-label' htmlFor='inlineCheckbox2'>My Campaigns</label>
+                            <input className='form-check-input' type='checkbox' id='inlineCheckbox3' ref={(ownedCheckInput) => { this.ownedCheckInput = ownedCheckInput }} />
+                            <label className='form-check-label' htmlFor='inlineCheckbox3'>My Campaigns</label>
                         </div>
                     </div>
                 </div>
@@ -192,7 +193,7 @@ class OwnedCampaigns extends Component {
         </div>
         <PageNav 
             postsPerPage={this.state.postsPerPage}
-            totalPosts={this.state.currentCampaigns.length}
+            totalPosts={this.props.filteredCampaigns.length}
             paginate={this.paginate}
             currentPage={this.state.currentPage}
         />
@@ -226,4 +227,4 @@ class OwnedCampaigns extends Component {
     }
   }
 
-  export default OwnedCampaigns;
+  export default Campaigns;

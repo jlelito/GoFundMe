@@ -95,7 +95,7 @@ class App extends Component {
             withdrawed.push(currentWithdrawed)
           }
           
-          await this.setState({contributionsState: contribs, campaignList: camps, withdrawed})
+          await this.setState({contributionsState: contribs, campaignList: camps, filteredCampaigns: camps, withdrawed})
         }
         catch(e)  {
           window.alert('Cannot update Campaigns! Error:', e.toString())
@@ -248,6 +248,10 @@ class App extends Component {
     this.notificationOne.current.updateShowNotify()
   }
 
+  filterCampaigns = async (newFilteredList) => {
+    await this.setState({filteredCampaigns: newFilteredList})
+  }
+
     constructor(props) {
       super(props)
       this.notificationOne = React.createRef()
@@ -259,6 +263,7 @@ class App extends Component {
         goFundContract: {},
         contractAddress: null,
         campaignList: [],
+        filteredCampaigns: [],
         contributors: {},
         contributionsState: [],
         withdrawed: {},
@@ -368,12 +373,14 @@ class App extends Component {
           <Campaigns
             web3={this.state.web3}
             campaigns={this.state.campaignList}
+            filteredCampaigns={this.state.filteredCampaigns}
             contributionsState={this.state.contributionsState}
             fundCampaign={this.fundCampaign}
             account={this.state.account}
             withdraw={this.withdraw}
             isFinished={this.isFinished}
             withdrawed={this.state.withdrawed}
+            filterCampaigns={this.filterCampaigns}
           />
 
           <div className='row justify-content-left'>
