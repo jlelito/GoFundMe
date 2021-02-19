@@ -109,7 +109,6 @@ class Card extends Component {
                             
                               <input
                                 className='mt-3' 
-                                id='targetcontribute'
                                 type='number'
                                 step='.01'
                                 ref={(input) => { this.input = input }}
@@ -129,7 +128,7 @@ class Card extends Component {
                       }
                         
                     <div className='py-2'>
-                      {this.props.account != null && this.props.account != undefined && this.props.contribution != undefined ?
+                      {this.props.account !== null && this.props.account !== undefined && this.props.contribution !== undefined ?
                       <small className='float-left mt-1 text-muted'>
                         <b>Contributed: {this.props.web3.utils.fromWei(this.props.contribution.toString(), 'Ether')} Ether</b>
                       </small> 
