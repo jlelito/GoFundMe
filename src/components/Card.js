@@ -28,7 +28,7 @@ class Card extends Component {
         <main role='main' className='container-fluid d-flex justify-content-center'>
           <div className='card-group justify-content-center'>
               <div className='row'>
-                <div className='card mb-4 mx-4' >
+                <div className={this.props.campaign.owner === this.props.account ? 'card border-success mb-4 mx-4' : 'card border mb-4 mx-4'}> 
                   <div className='card-header'>
                     <p>Campaign Owner:</p>
                     <img
@@ -65,38 +65,34 @@ class Card extends Component {
                             }
                           </>
                         }
-                        <div className='card-footer text-muted'>
-                        {this.props.campaign.owner === this.props.account ? (
+                        <div className='card-footer'>
+                        {this.props.campaign.owner === this.props.account ? 
                           <>
                             {this.props.isFinished(this.props.campaign) && this.props.withdrawed[this.props.campaign.id] === false && reachedGoal(this.props.campaign) === true ? 
-                              ( 
-                              <button className='btn btn-primary btn-sm' onClick={() => this.props.withdraw(this.props.campaign.id)}>Withdraw Contributions</button> 
-                              )
-                              : (
-                                  
-                                  <>
-                                      {this.props.withdrawed[this.props.campaign.id] === true ? 
-                                        'Already Withdrawed!'
-                                        : null
-                                      }
-                                  </> 
-                                  
-                                )
+                              
+                              <button className='btn btn-primary btn-sm' onClick={() => this.props.withdraw(this.props.campaign.id)}>Withdraw Contributions</button>   
+                              :  
+                              <>
+                                {this.props.withdrawed[this.props.campaign.id] === true ? 
+                                  'Already Withdrawed!'
+                                  : null
+                                }
+                              </>   
                             }
+                            {!this.props.isFinished(this.props.campaign) ? <h3 className='text-success mt-1'>Your Campaign!</h3> : null}
                           </>
-                          )
-                            
+                          
+                          
+                          
                           : 
                           <>
-                          {this.props.isFinished(this.props.campaign) ? (
+                          {this.props.isFinished(this.props.campaign) ? 
                           <>
-                            {this.props.contribution > 0 && !reachedGoal(this.props.campaign) ? (
+                            {this.props.contribution > 0 && !reachedGoal(this.props.campaign) ? 
                             <button className='btn btn-primary btn-success btn-sm float-right' onClick={() => this.props.refund(this.props.campaign.id)}>Refund</button> 
-                            )
-                            : null}
+                            : null }
                           </>
-                          ) : (
-                          
+                           : 
                               <form
                               onSubmit={(event) => {
                                   event.preventDefault()
@@ -120,8 +116,6 @@ class Card extends Component {
                                 Contribute!
                               </button>
                             </form>
-                          
-                          )
                           
                         }
                         </>
