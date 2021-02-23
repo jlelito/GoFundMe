@@ -129,7 +129,7 @@ class Campaigns extends Component {
               </div>
               
               <div className='col-auto'>
-                <button type='search' className='btn btn-primary mt-2' >
+                <button type='search' className='btn btn-primary' >
                   Search
                 </button>
               </div>
@@ -199,7 +199,6 @@ class Campaigns extends Component {
             currentPage={this.state.currentPage}
         />
         <div className='row float-right'>
-            
             <label className='mr-2'>Campaigns Per Page:</label>
             <select className='form-control-sm mb-2 mr-5' id='CampaignsPerPage' 
                 ref={(campsPerPage) => { this.campsPerPage = campsPerPage }}

@@ -331,7 +331,7 @@ class App extends Component {
           />
           <hr />
           <div className='row'>
-            <div className='col-6'>
+            <div className='col'>
               <h2 className='my-4'>Create Campaign</h2>
               <CreateCampaignForm 
                 createCampaign={this.createCampaign}
@@ -385,7 +385,7 @@ class App extends Component {
             isConnected={this.state.isConnected}
           />
 
-          <div className='row justify-content-left'>
+          <div className='row float-left'>
             <span className='ml-5'>Contract on Etherscan.io: </span> <a href={`https://ropsten.etherscan.io/address/${this.state.contractAddress}`} className='ml-1' target='_blank' rel='noopener noreferrer'>Contract</a>
           </div>
         </>
