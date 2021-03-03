@@ -3,13 +3,13 @@ import GoFundMe from './abis/GoFundMe.json';
 import Web3 from 'web3';
 import Navbar from './components/Navbar';
 import './App.css';
-import ethPic from './src_images/ETH.png';
-import money from './src_images/Donate.png';
 import CreateCampaignForm from './components/CreateCampaign.js';
 import Notification from './components/Notification.js';
 import ConnectionBanner from '@rimble/connection-banner';
 import Loading from './components/Loading.js';
 import Campaigns from './components/Campaigns.js';
+import ContributionsTable from './components/ContributionsTable';
+import money from './src_images/Donate.png';
 
 class App extends Component {
   
@@ -339,36 +339,15 @@ class App extends Component {
                 isConnected={this.state.isConnected}
               />
             </div>
-            
-            <div className='col-md-5 justify-content-center'>
+            <div className='col-md-5 justify-content-center mx-5'>
               <h2 className='my-4'>Your Contributions <img src={money} width='35' height='35' alt='eth logo'/> </h2> 
-              <table className='table table-striped table-hover mt-5 mr-2'>
-                <caption>Contributions</caption>
-                  <thead className='thead-light'>
-                    <tr>
-                      <th>ID</th>
-                      <th>Campaign Name</th>
-                      <th>Contribution</th>
-                    </tr>
-                  </thead>
-                <tbody>
-                  
-                  {this.state.contributionsState.map(contrib => (
-                    <React.Fragment key={contrib.id}> 
-                      {contrib[1] > 0 ? 
-                        <tr key={contrib.id}>
-                          <td>{contrib[0]}</td>
-                          <td>{this.state.campaignList[contrib[0]].name}</td>
-                          <td>{this.state.web3.utils.fromWei(contrib[1], 'Ether')} ETH<img src={ethPic} width='25' height='25' alt='eth logo'/></td>
-                        </tr> 
-                        : null 
-                      }
-                    </React.Fragment>
-                  ))}
-                </tbody>
-              </table>
+              <ContributionsTable 
+                contributionsState={this.state.contributionsState}
+                campaignList={this.state.campaignList}
+                web3={this.state.web3}
+              />
             </div>
-          </div>   
+          </div>
           <hr />
 
           <Campaigns
