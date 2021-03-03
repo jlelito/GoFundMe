@@ -384,10 +384,10 @@ class App extends Component {
             filterCampaigns={this.filterCampaigns}
             isConnected={this.state.isConnected}
           />
-
-          <div className='row float-left'>
-            <span className='ml-5'>Contract on Etherscan.io: </span> <a href={`https://ropsten.etherscan.io/address/${this.state.contractAddress}`} className='ml-1' target='_blank' rel='noopener noreferrer'>Contract</a>
-          </div>
+          <hr/>
+          <footer className='row col-auto'>
+            <span>Contract on Etherscan.io: </span> <a href={`https://ropsten.etherscan.io/address/${this.state.contractAddress}`} className='ml-1' target='_blank' rel='noopener noreferrer'>Contract</a>
+          </footer>
         </>
         }
       </div>

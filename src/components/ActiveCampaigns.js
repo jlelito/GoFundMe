@@ -198,7 +198,7 @@ class Campaigns extends Component {
             paginate={this.paginate}
             currentPage={this.state.currentPage}
         />
-        <div className='row float-right'>
+        <div className='row float-right col-auto mt-3'>
             <label className='mr-2'>Campaigns Per Page:</label>
             <select className='form-control-sm mb-2 mr-5' id='CampaignsPerPage' 
                 ref={(campsPerPage) => { this.campsPerPage = campsPerPage }}
