@@ -9,7 +9,7 @@ import CreateCampaignForm from './components/CreateCampaign.js';
 import Notification from './components/Notification.js';
 import ConnectionBanner from '@rimble/connection-banner';
 import Loading from './components/Loading.js';
-import Campaigns from './components/ActiveCampaigns.js';
+import Campaigns from './components/Campaigns.js';
 
 class App extends Component {
   
