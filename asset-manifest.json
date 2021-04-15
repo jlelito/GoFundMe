@@ -1,28 +1,28 @@
 {
   "files": {
-    "main.css": "/GoFundMe/static/css/main.ab7136cd.chunk.css",
-    "main.js": "/GoFundMe/static/js/main.40a06287.chunk.js",
-    "main.js.map": "/GoFundMe/static/js/main.40a06287.chunk.js.map",
-    "runtime-main.js": "/GoFundMe/static/js/runtime-main.22b2cc16.js",
-    "runtime-main.js.map": "/GoFundMe/static/js/runtime-main.22b2cc16.js.map",
-    "static/css/2.20aa2d7b.chunk.css": "/GoFundMe/static/css/2.20aa2d7b.chunk.css",
-    "static/js/2.62c95bcd.chunk.js": "/GoFundMe/static/js/2.62c95bcd.chunk.js",
-    "static/js/2.62c95bcd.chunk.js.map": "/GoFundMe/static/js/2.62c95bcd.chunk.js.map",
-    "index.html": "/GoFundMe/index.html",
-    "static/css/2.20aa2d7b.chunk.css.map": "/GoFundMe/static/css/2.20aa2d7b.chunk.css.map",
-    "static/css/main.ab7136cd.chunk.css.map": "/GoFundMe/static/css/main.ab7136cd.chunk.css.map",
-    "static/js/2.62c95bcd.chunk.js.LICENSE.txt": "/GoFundMe/static/js/2.62c95bcd.chunk.js.LICENSE.txt",
-    "static/media/Donate.346f231f.png": "/GoFundMe/static/media/Donate.346f231f.png",
-    "static/media/ETH.91dd9993.png": "/GoFundMe/static/media/ETH.91dd9993.png",
-    "static/media/checkmark.bd5b95a7.png": "/GoFundMe/static/media/checkmark.bd5b95a7.png",
-    "static/media/eth-diamond-rainbow.bd39f017.png": "/GoFundMe/static/media/eth-diamond-rainbow.bd39f017.png",
-    "static/media/xmark.50094963.png": "/GoFundMe/static/media/xmark.50094963.png"
+    "main.css": "/fundraising/static/css/main.ab7136cd.chunk.css",
+    "main.js": "/fundraising/static/js/main.1c4037d4.chunk.js",
+    "main.js.map": "/fundraising/static/js/main.1c4037d4.chunk.js.map",
+    "runtime-main.js": "/fundraising/static/js/runtime-main.4a1d2dc8.js",
+    "runtime-main.js.map": "/fundraising/static/js/runtime-main.4a1d2dc8.js.map",
+    "static/css/2.20aa2d7b.chunk.css": "/fundraising/static/css/2.20aa2d7b.chunk.css",
+    "static/js/2.53b9d821.chunk.js": "/fundraising/static/js/2.53b9d821.chunk.js",
+    "static/js/2.53b9d821.chunk.js.map": "/fundraising/static/js/2.53b9d821.chunk.js.map",
+    "index.html": "/fundraising/index.html",
+    "static/css/2.20aa2d7b.chunk.css.map": "/fundraising/static/css/2.20aa2d7b.chunk.css.map",
+    "static/css/main.ab7136cd.chunk.css.map": "/fundraising/static/css/main.ab7136cd.chunk.css.map",
+    "static/js/2.53b9d821.chunk.js.LICENSE.txt": "/fundraising/static/js/2.53b9d821.chunk.js.LICENSE.txt",
+    "static/media/Donate.346f231f.png": "/fundraising/static/media/Donate.346f231f.png",
+    "static/media/ETH.91dd9993.png": "/fundraising/static/media/ETH.91dd9993.png",
+    "static/media/checkmark.bd5b95a7.png": "/fundraising/static/media/checkmark.bd5b95a7.png",
+    "static/media/eth-diamond-rainbow.bd39f017.png": "/fundraising/static/media/eth-diamond-rainbow.bd39f017.png",
+    "static/media/xmark.50094963.png": "/fundraising/static/media/xmark.50094963.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.22b2cc16.js",
+    "static/js/runtime-main.4a1d2dc8.js",
     "static/css/2.20aa2d7b.chunk.css",
-    "static/js/2.62c95bcd.chunk.js",
+    "static/js/2.53b9d821.chunk.js",
     "static/css/main.ab7136cd.chunk.css",
-    "static/js/main.40a06287.chunk.js"
+    "static/js/main.1c4037d4.chunk.js"
   ]
 }
